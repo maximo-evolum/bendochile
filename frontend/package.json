@@ -1,0 +1,8 @@
+
+{
+  "name": "nova-market-frontend",
+  "private": true,
+  "scripts": {
+    "dev": "next dev"
+  }
+}

@@ -1,0 +1,26 @@
+Corrección aplicada y causa encontrada:
+
+CAUSA DEL ERROR:
+En desarrollo local, el frontend corre en Vite puerto 5173.
+El login hacía fetch('/api/auth/login'), pero Vite no tenía proxy /api hacia Express puerto 4000.
+Entonces Vite devolvía HTML/vacío en vez de JSON, causando:
+Failed to execute 'json' on 'Response': Unexpected end of JSON input
+
+CORREGIDO:
+- vite.config.js ahora tiene proxy /api -> http://localhost:4000
+- src/services/products.js parsea JSON de forma segura
+- server.js siempre devuelve JSON en /api/auth/login
+- API SQLite completa
+- columnas faltantes se migran automáticamente
+- Railway preparado
+
+COMANDOS:
+npm install --legacy-peer-deps
+npm run dev
+
+PRUEBAS:
+http://localhost:4000/api/health
+http://localhost:5173/login
+
+LOGIN:
+maximo / admin123

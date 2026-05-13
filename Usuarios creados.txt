@@ -1,0 +1,30 @@
+Usuarios creados:
+maximo
+admin1
+admin2
+admin3
+admin4
+Contraseña temporal para todos: admin123
+
+## Rutas
+/shop -> tienda pública
+/login -> login admins
+/admin -> panel privado
+
+cd backend
+npm install
+node server.js
+
+npm install
+npm run dev
+
+cd "C:\Users\maxim\OneDrive\Escritorio\novamarketdemo\backend"
+npm.cmd 
+npx prisma  
+npm.cmd 
+npm install
+node server.js
+
+cd "C:\Users\maxim\OneDrive\Escritorio\novamarketdemo\frontend"
+npm.cmd 
+npm.cmd 

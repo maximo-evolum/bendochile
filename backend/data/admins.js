@@ -1,0 +1,33 @@
+
+module.exports = [
+  {
+    id:1,
+    username:'maximo',
+    password:'$2a$10$4f5Qz7P4Lh4V6T6Qf3Q9G.t6LxV5jv0N9u0d5I4h5mN7zjJ0mV0kK',
+    role:'superadmin'
+  },
+  {
+    id:2,
+    username:'admin1',
+    password:'$2a$10$4f5Qz7P4Lh4V6T6Qf3Q9G.t6LxV5jv0N9u0d5I4h5mN7zjJ0mV0kK',
+    role:'admin'
+  },
+  {
+    id:3,
+    username:'admin2',
+    password:'$2a$10$4f5Qz7P4Lh4V6T6Qf3Q9G.t6LxV5jv0N9u0d5I4h5mN7zjJ0mV0kK',
+    role:'admin'
+  },
+  {
+    id:4,
+    username:'admin3',
+    password:'$2a$10$4f5Qz7P4Lh4V6T6Qf3Q9G.t6LxV5jv0N9u0d5I4h5mN7zjJ0mV0kK',
+    role:'admin'
+  },
+  {
+    id:5,
+    username:'admin4',
+    password:'$2a$10$4f5Qz7P4Lh4V6T6Qf3Q9G.t6LxV5jv0N9u0d5I4h5mN7zjJ0mV0kK',
+    role:'admin'
+  }
+];

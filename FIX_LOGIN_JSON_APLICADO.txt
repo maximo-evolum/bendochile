@@ -1,0 +1,21 @@
+Corrección aplicada:
+
+- Se corrigió src/services/products.js con todos los exports que usa src/main.jsx.
+- loginAdmin ahora parsea respuestas de forma segura.
+- server.js siempre devuelve JSON en /api/auth/login.
+- Se corrigió SQLite con columnas completas de productos.
+- Se agregaron migraciones automáticas para columnas faltantes.
+- Se mantuvieron admins:
+  maximo/admin123
+  admin1/admin123
+  admin2/admin123
+  admin3/admin123
+  admin4/admin123
+
+Comandos:
+npm install --legacy-peer-deps
+npm run dev
+
+Pruebas:
+http://localhost:4000/api/health
+http://localhost:5173/login

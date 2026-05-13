@@ -1,0 +1,54 @@
+[
+  {
+    "id": "taladro-inalambrico",
+    "name": "Taladro inalámbrico 20V",
+    "price": 89990,
+    "stock": 14,
+    "category": "Herramientas",
+    "description": "Taladro compacto para trabajos de hogar, taller y mantención diaria.",
+    "specs": "20V • Batería recargable • Incluye maletín • Mandril rápido",
+    "image": "https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=1200&auto=format&fit=crop",
+    "featured": true,
+    "created_at": "2026-01-01T00:00:00.000Z",
+    "updated_at": "2026-05-13T02:55:55.020Z"
+  },
+  {
+    "id": "kit-herramientas",
+    "name": "Kit de herramientas premium",
+    "price": 54990,
+    "stock": 13,
+    "category": "Ferretería",
+    "description": "Set práctico para reparaciones, instalaciones y mantenciones básicas.",
+    "specs": "Martillo • Alicate • Destornilladores • Llaves • Cinta métrica",
+    "image": "https://images.unsplash.com/photo-1581147036324-c1c6d0f7f4f5?q=80&w=1200&auto=format&fit=crop",
+    "featured": true,
+    "created_at": "2026-01-02T00:00:00.000Z",
+    "updated_at": "2026-05-13T00:57:29.111Z"
+  },
+  {
+    "id": "aceite-vegetal",
+    "name": "Aceite vegetal 5L",
+    "price": 12990,
+    "stock": 16,
+    "category": "Abarrotes",
+    "description": "Aceite vegetal formato familiar ideal para cocina diaria y negocios.",
+    "specs": "5 litros • Formato ahorro • Uso gastronómico • Envase resistente",
+    "image": "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?q=80&w=1200&auto=format&fit=crop",
+    "featured": true,
+    "created_at": "2026-01-03T00:00:00.000Z",
+    "updated_at": "2026-05-13T02:56:38.140Z"
+  },
+  {
+    "id": "detergente-hogar",
+    "name": "Detergente hogar 3L",
+    "price": 6997,
+    "stock": 17,
+    "category": "Limpieza",
+    "description": "Detergente multiuso para limpieza profunda en el hogar.",
+    "specs": "3L • Alta concentración • Aroma fresco • Uso diario",
+    "image": "https://images.unsplash.com/photo-1583947215259-38e31be8751f?q=80&w=1200&auto=format&fit=crop",
+    "featured": true,
+    "created_at": "2026-01-04T00:00:00.000Z",
+    "updated_at": "2026-05-13T02:56:27.169Z"
+  }
+]
