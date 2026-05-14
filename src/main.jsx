@@ -73,9 +73,13 @@ function finalPrice(product) {
   const price = Number(product.price || 0)
   const percent = Number(product.discountPercent || 0)
 
-  if (!percent || percent <= 0) return price
+  if (!percent || percent <= 0) {
+    return price
+  }
 
-  return Math.round(price - (price * percent / 100))
+  return Math.round(
+    price - (price * percent / 100)
+  )
 }
 
 function App() {
@@ -482,7 +486,21 @@ function ProductModal({ product, onClose, addToCart }) {
           <p>{product.description}</p>
           <div className={`stock large ${status.className}`}>{status.label}: {product.stock} unidades</div>
           <div className="specBox"><strong>Especificaciones</strong><span>{product.specs}</span></div>
-          <div className="modalBuy"><strong>{money(product.price)}</strong><button disabled={product.stock <= 0} onClick={() => addToCart(product)}><ShoppingCart size={18} /> Agregar al carrito</button></div>
+          <div className="modalBuy"><div className="priceBlock">
+  <strong>{money(finalPrice(product))}</strong>
+
+  {Number(product.discountPercent || 0) > 0 && (
+    <>
+      <small className="oldPrice">
+        {money(product.price)}
+      </small>
+
+      <span className="discountBadge">
+        -{product.discountPercent}%
+      </span>
+    </>
+  )}
+</div><button disabled={product.stock <= 0} onClick={() => addToCart(product)}><ShoppingCart size={18} /> Agregar al carrito</button></div>
         </div>
       </section>
     </div>

@@ -6,25 +6,43 @@ admin3
 admin4
 Contraseña temporal para todos: admin123
 
-## Rutas
-/shop -> tienda pública
-/login -> login admins
-/admin -> panel privado
-
-cd backend
-npm install
+cd "C:\Users\maxim\OneDrive\Escritorio\novamarketdemo\backend"
 node server.js
-
 npm install
 npm run dev
 
-cd "C:\Users\maxim\OneDrive\Escritorio\novamarketdemo\backend"
-npm.cmd 
-npx prisma  
-npm.cmd 
-npm install
-node server.js
+LIMPIAR DEPENDENCIAS SI HAY ERRORES
 
-cd "C:\Users\maxim\OneDrive\Escritorio\novamarketdemo\frontend"
-npm.cmd 
-npm.cmd 
+Remove-Item -Recurse -Force node_modules
+Remove-Item package-lock.json
+
+REINSTALAR
+npm install --legacy-peer-deps
+
+INICIALIZAR GIT
+git init
+
+CONFIGURAR GIT
+git config --global user.name "maximo-evolum"
+git config --global user.email "maximo.jara@evolum.cl"
+
+CREAR RAMA MAIN
+git branch -M main
+
+CONECTAR GITHUB
+git remote add origin https://github.com/maximo-evolum/bendochile.git
+
+SUBIR CAMBIOS A GITHUB
+git add .
+git commit -m "update bendo"
+git push -u origin main --force
+
+BUILD PRODUCCIÓN
+npm run build
+
+CORRER PRODUCCIÓN
+npm start
+
+ACTUALIZAR RAILWAY  
+Solo hacer:
+git push
