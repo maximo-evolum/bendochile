@@ -1,0 +1,21 @@
+FIXES APLICADOS Y TESTEADOS
+
+- descuento visible en cards
+- descuento visible modal
+- descuento visible carrito
+- total carrito corregido
+- badge -35%
+- precio original tachado
+- especificaciones modal corregidas
+- imágenes corregidas
+- proporciones imágenes corregidas
+- object-fit contain
+- inventory imágenes corregidas
+- carrito imágenes corregidas
+- modal imágenes corregidas
+
+TEST:
+- React compilación OK
+- descuentos OK
+- carrito OK
+- imágenes OK

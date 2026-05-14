@@ -133,3 +133,62 @@ footer{display:grid;grid-template-columns:1fr .45fr;gap:40px;background:linear-g
   flex-direction: column;
   gap: 4px;
 }
+
+
+
+.fixedImage img,
+.fixedImage,
+.inventoryItem img,
+.card img,
+.productModal img,
+.cartItem img {
+  object-fit: contain !important;
+  background: #fff;
+}
+
+.card img {
+  width: 100%;
+  height: 320px;
+  padding: 12px;
+}
+
+.inventoryItem img {
+  width: 72px;
+  height: 72px;
+  padding: 4px;
+}
+
+.cartItem img {
+  width: 72px;
+  height: 72px;
+  padding: 4px;
+}
+
+.productModal img {
+  width: 100%;
+  max-height: 540px;
+  padding: 10px;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.oldPrice {
+  text-decoration: line-through;
+  opacity: .65;
+  font-size: .8rem;
+}
+
+.discountBadge {
+  display: inline-flex;
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ffeded;
+  color: #d11;
+  font-size: .75rem;
+  font-weight: 700;
+}

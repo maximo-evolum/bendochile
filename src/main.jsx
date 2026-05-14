@@ -452,7 +452,7 @@ function ProductCard({ product, onProduct, addToCart }) {
         <div className="row"><span className="tag">{product.category}</span><span className={`stock ${status.className}`}>{status.label}: {product.stock}</span></div>
         <h3>{product.name}</h3>
         <p>{product.description}</p>
-        <small>{product.specs}</small>
+        <small>{product.specs || 'Sin especificaciones agregadas'}</small>
         <div className="buyRow">
           <div className="priceBlock">
             <strong>{money(finalPrice(product))}</strong>
@@ -485,7 +485,7 @@ function ProductModal({ product, onClose, addToCart }) {
           <h2>{product.name}</h2>
           <p>{product.description}</p>
           <div className={`stock large ${status.className}`}>{status.label}: {product.stock} unidades</div>
-          <div className="specBox"><strong>Especificaciones</strong><span>{product.specs}</span></div>
+          <div className="specBox"><strong>Especificaciones</strong><span>{product.specs || 'Sin especificaciones agregadas'}</span></div>
           <div className="modalBuy"><div className="priceBlock">
   <strong>{money(finalPrice(product))}</strong>
 
@@ -508,8 +508,8 @@ function ProductModal({ product, onClose, addToCart }) {
 }
 
 function CartDrawer({ cart, open, onClose, changeQty, removeFromCart }) {
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const message = encodeURIComponent(`Hola, quiero cotizar/comprar estos productos:\n${cart.map((item) => `- ${item.name} x${item.qty}: ${money(item.price * item.qty)}`).join('\n')}\nTotal estimado: ${money(total)}`);
+  const total = cart.reduce((sum, item) => sum + finalPrice(item) * item.qty, 0);
+  const message = encodeURIComponent(`Hola, quiero cotizar/comprar estos productos:\n${cart.map((item) => `- ${item.name} x${item.qty}: ${money(finalPrice(item) * item.qty)}`).join('\n')}\nTotal estimado: ${money(total)}`);
 
   return (
     <aside className={`cartDrawer ${open ? 'open' : ''}`}>
@@ -519,7 +519,7 @@ function CartDrawer({ cart, open, onClose, changeQty, removeFromCart }) {
         {cart.map((item) => (
           <div className="cartItem" key={item.id}>
             <img src={resolveProductImage(item.image)} alt={item.name} />
-            <div><strong>{item.name}</strong><small>{money(item.price)}</small><div className="qty"><button onClick={() => changeQty(item.id, -1)}><Minus size={14} /></button><span>{item.qty}</span><button onClick={() => changeQty(item.id, 1)}><Plus size={14} /></button></div></div>
+            <div><strong>{item.name}</strong><small>{money(finalPrice(item))}</small><div className="qty"><button onClick={() => changeQty(item.id, -1)}><Minus size={14} /></button><span>{item.qty}</span><button onClick={() => changeQty(item.id, 1)}><Plus size={14} /></button></div></div>
             <button className="remove" onClick={() => removeFromCart(item.id)}><Trash2 size={16} /></button>
           </div>
         ))}
