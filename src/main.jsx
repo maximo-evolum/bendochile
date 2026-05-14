@@ -37,6 +37,8 @@ const emptyForm = {
   description: '',
   specs: '',
   image: '',
+  gallery: [],
+  discountPercent: '',
   featured: false,
 };
 
@@ -48,6 +50,32 @@ function stockInfo(stock) {
   if (stock <= 0) return { label: 'Agotado', className: 'out' };
   if (stock <= 5) return { label: 'Últimas unidades', className: 'low' };
   return { label: 'Disponible', className: 'ok' };
+}
+
+
+function normalizeGallery(gallery) {
+  if (Array.isArray(gallery)) return gallery.filter(Boolean)
+
+  if (!gallery) return []
+
+  try {
+    const parsed = JSON.parse(gallery)
+    return Array.isArray(parsed) ? parsed.filter(Boolean) : []
+  } catch {
+    return String(gallery)
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean)
+  }
+}
+
+function finalPrice(product) {
+  const price = Number(product.price || 0)
+  const percent = Number(product.discountPercent || 0)
+
+  if (!percent || percent <= 0) return price
+
+  return Math.round(price - (price * percent / 100))
 }
 
 function App() {
@@ -133,7 +161,9 @@ function App() {
       ...form,
       price: Number(form.price),
       stock: Number(form.stock || 0),
-      image: form.image || 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=1200&auto=format&fit=crop',
+      image: form.image || '',
+      gallery: normalizeGallery(form.gallery),
+      discountPercent: Number(form.discountPercent || 0),
     };
 
     try {
@@ -146,7 +176,17 @@ function App() {
     }
   };
 
-  const editProduct = (product) => { setForm({ ...product, price: String(product.price), stock: String(product.stock) }); setImageFile(null); };
+  const editProduct = (product) => {
+    setForm({
+      ...product,
+      price: String(product.price || ''),
+      stock: String(product.stock || ''),
+      discountPercent: String(product.discountPercent || ''),
+      gallery: normalizeGallery(product.gallery),
+    });
+
+    setImageFile(null);
+  };
   const deleteProduct = async (id) => { if (confirm('¿Eliminar este producto?')) { await deleteProductById(id, adminToken); await loadProducts(); } };
   const updateStock = async (id, stock) => {
     setProducts((current) => current.map((product) => (product.id === id ? { ...product, stock: Number(stock) } : product)));
@@ -409,7 +449,21 @@ function ProductCard({ product, onProduct, addToCart }) {
         <h3>{product.name}</h3>
         <p>{product.description}</p>
         <small>{product.specs}</small>
-        <div className="buyRow"><strong>{money(product.price)}</strong><button disabled={product.stock <= 0} onClick={() => addToCart(product)}><ShoppingCart size={16} /> Agregar</button></div>
+        <div className="buyRow">
+          <div className="priceBlock">
+            <strong>{money(finalPrice(product))}</strong>
+            {Number(product.discountPercent || 0) > 0 && (
+              <>
+                <small className="oldPrice">{money(product.price)}</small>
+                <span className="discountBadge">-{product.discountPercent}%</span>
+              </>
+            )}
+          </div>
+
+          <button disabled={product.stock <= 0} onClick={() => addToCart(product)}>
+            <ShoppingCart size={16} /> Agregar
+          </button>
+        </div>
       </div>
     </article>
   );
@@ -488,6 +542,40 @@ function Admin({ form, setForm, saveProduct, products, deleteProduct, updateStoc
           <label>Especificaciones<textarea placeholder="Medidas, formato, material, uso recomendado" value={form.specs} onChange={(event) => setForm({ ...form, specs: event.target.value })} /></label>
           <div className="two"><label>Precio<input type="number" placeholder="29990" value={form.price} onChange={(event) => setForm({ ...form, price: event.target.value })} /></label><label>Stock<input type="number" placeholder="15" value={form.stock} onChange={(event) => setForm({ ...form, stock: event.target.value })} /></label></div>
           <label className="upload"><ImagePlus size={28} /><span>{form.image ? 'Imagen cargada correctamente' : 'Subir imagen del producto'}</span><input type="file" accept="image/*" onChange={(event) => handleImage(event.target.files[0])} /></label>
+
+          <label>
+            Descuento %
+            <input
+              type="number"
+              placeholder="0"
+              value={form.discountPercent || ''}
+              onChange={(event) => setForm({ ...form, discountPercent: event.target.value })}
+            />
+          </label>
+
+          <label>
+            Galería de imágenes
+            <textarea
+              placeholder="Ejemplo: uploads/1.jpg, uploads/2.jpg"
+              value={Array.isArray(form.gallery) ? form.gallery.join(', ') : form.gallery || ''}
+              onChange={(event) => setForm({
+                ...form,
+                gallery: event.target.value
+              })}
+            />
+          </label>
+
+          {normalizeGallery(form.gallery).length > 0 && (
+            <div className="galleryPreview">
+              {normalizeGallery(form.gallery).map((image) => (
+                <img
+                  key={image}
+                  src={resolveProductImage(image)}
+                  alt="preview"
+                />
+              ))}
+            </div>
+          )}
           <div className="formActions"><button className="primary">{form.id ? 'Guardar cambios' : 'Publicar producto'}</button>{form.id && <button type="button" className="ghostText" onClick={() => { setForm(emptyForm); setImageFile(null); }}>Cancelar</button>}</div>
         </form>
 

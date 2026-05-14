@@ -170,3 +170,20 @@ export function subscribeToProducts(callback) {
     clearInterval(interval)
   }
 }
+
+
+export function normalizeGallery(gallery) {
+  if (Array.isArray(gallery)) return gallery.filter(Boolean)
+
+  if (!gallery) return []
+
+  try {
+    const parsed = JSON.parse(gallery)
+    return Array.isArray(parsed) ? parsed.filter(Boolean) : []
+  } catch {
+    return String(gallery)
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean)
+  }
+}

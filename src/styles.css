@@ -94,3 +94,42 @@ footer{display:grid;grid-template-columns:1fr .45fr;gap:40px;background:linear-g
 .footerTextLogo span { color: var(--primary) !important; }
 .logoBrand img, .footerLogo img { display: none !important; }
 @media(max-width:760px){ .bendoTextLogo{font-size:24px;} .footerTextLogo{font-size:32px;} }
+
+
+.galleryPreview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.galleryPreview img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+.oldPrice {
+  text-decoration: line-through;
+  opacity: .65;
+  font-size: .8rem;
+  display: block;
+}
+
+.discountBadge {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ffeded;
+  color: #d11;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
