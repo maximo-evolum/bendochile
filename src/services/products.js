@@ -1,4 +1,3 @@
-
 export const API_URL = ''
 
 async function safeJson(response) {
@@ -9,7 +8,7 @@ async function safeJson(response) {
   try {
     data = text ? JSON.parse(text) : null
   } catch (error) {
-    throw new Error(`Respuesta inválida del servidor`)
+    throw new Error('Respuesta inválida del servidor')
   }
 
   if (!response.ok) {
@@ -23,40 +22,40 @@ export function isSupabaseConfigured() {
   return false
 }
 
-export function resolveProductImage(product) {
-  const image =
-    product?.image ||
-    product?.imageUrl ||
-    product?.img ||
-    ''
+export function resolveProductImage(image) {
+  const rawImage = image || ''
 
-  if (!image || image.trim() === '') {
-    return 'https://via.placeholder.com/600x600?text=BENDO'
+  if (!rawImage || rawImage.trim() === '') {
+    return '/uploads/no-image.png'
   }
 
-  // URL externa
+  // Base64
+  if (rawImage.startsWith('data:image')) {
+    return rawImage
+  }
+
+  // URLs externas
   if (
-    image.startsWith('http://') ||
-    image.startsWith('https://')
+    rawImage.startsWith('http://') ||
+    rawImage.startsWith('https://')
   ) {
-    return image
+    return rawImage
   }
 
-  // Limpieza de rutas Windows/fakepath
-  let cleanPath = image
-    .replace(/\\/g, '/')
-    .replace(/^C:\\/i, '')
-    .replace(/^fakepath\//i, '')
-    .replace(/^\/+/, '')
-
-  // Si solo viene nombre archivo
-  if (
-    !cleanPath.startsWith('uploads/')
-  ) {
-    cleanPath = `uploads/${cleanPath}`
+  // Ya absoluta
+  if (rawImage.startsWith('/')) {
+    return rawImage
   }
 
-  return `${window.location.origin}/${cleanPath}`
+  // limpiar nombre archivo
+  const imageName = rawImage
+    .split('?')[0]
+    .split('/')
+    .pop()
+    .split('\\')
+    .pop()
+
+  return `/uploads/${imageName}`
 }
 
 export async function getProducts() {
@@ -64,16 +63,39 @@ export async function getProducts() {
   return await safeJson(res)
 }
 
+export async function getPublicFallbackProducts() {
+  return []
+}
+
 export async function saveProduct(product = {}) {
+
   // normalizar imagen
   if (product.image) {
-    const imageName = product.image
-      .split('/')
-      .pop()
-      .split('\\')
-      .pop()
 
-    product.image = `uploads/${imageName}`
+    // Base64
+    if (product.image.startsWith('data:image')) {
+      // dejar intacto
+    }
+
+    // URL externa
+    else if (
+      product.image.startsWith('http://') ||
+      product.image.startsWith('https://')
+    ) {
+      // dejar intacto
+    }
+
+    // imagen local
+    else {
+      const imageName = product.image
+        .split('?')[0]
+        .split('/')
+        .pop()
+        .split('\\')
+        .pop()
+
+      product.image = `/uploads/${imageName}`
+    }
   }
 
   const hasId = Boolean(product?.id)
