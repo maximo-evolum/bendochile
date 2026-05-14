@@ -84,7 +84,7 @@ function App() {
     try {
       const data = await getProducts();
       setProducts(data);
-      setApiStatus(isSupabaseConfigured ? 'Supabase conectado • Stock realtime activo' : 'API local conectada • Stock actualizado');
+      setApiStatus(isSupabaseConfigured ? 'Conectado • Stock realtime activo' : 'API local conectada • Stock actualizado');
     } catch (error) {
       try {
         const fallback = await getPublicFallbackProducts();
@@ -313,10 +313,10 @@ function LoginPage({ onLogin, message }) {
         {message && <div className="loginNotice">{message}</div>}
         <form onSubmit={submit}>
           <label>Usuario
-            <input value={username} onChange={(event) => setUsername(event.target.value)} placeholder="maximo" autoComplete="username" />
+            <input value={username} onChange={(event) => setUsername(event.target.value)} placeholder="username" autoComplete="username" />
           </label>
           <label>Contraseña
-            <input value={password} onChange={(event) => setPassword(event.target.value)} placeholder="admin123" type="password" autoComplete="current-password" />
+            <input value={password} onChange={(event) => setPassword(event.target.value)} placeholder="password" type="password" autoComplete="current-password" />
           </label>
           {error && <div className="loginError">{error}</div>}
           <button className="primary" disabled={loading}>{loading ? 'Ingresando...' : 'Ingresar al admin'}</button>
