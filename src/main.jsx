@@ -549,26 +549,85 @@ function ProductModal({ product, onClose, addToCart }) {
   const images = productGallery(product);
   const specs = productSpecs(product);
 
+  const [activeImage, setActiveImage] = useState(
+    images[0] || product.image
+  );
+
+  const currentIndex = images.findIndex(
+    (image) => image === activeImage
+  );
+
+  const goNext = () => {
+    if (images.length <= 1) return;
+
+    const nextIndex =
+      currentIndex >= images.length - 1
+        ? 0
+        : currentIndex + 1;
+
+    setActiveImage(images[nextIndex]);
+  };
+
+  const goPrev = () => {
+    if (images.length <= 1) return;
+
+    const prevIndex =
+      currentIndex <= 0
+        ? images.length - 1
+        : currentIndex - 1;
+
+    setActiveImage(images[prevIndex]);
+  };
+
   return (
     <div className="modalBackdrop" onClick={onClose}>
       <section className="productModal" onClick={(event) => event.stopPropagation()}>
-        <button className="close" onClick={onClose}><X size={20} /></button>
+        <button className="close" onClick={onClose}>
+          <X size={20} />
+        </button>
 
         <div className="modalGallery">
-          <img
-            className="modalMainImage"
-            src={resolveProductImage(images[0] || product.image)}
-            alt={product.name}
-          />
+          <div className="mainImageWrapper">
+            {images.length > 1 && (
+              <>
+                <button
+                  className="galleryArrow left"
+                  onClick={goPrev}
+                >
+                  ‹
+                </button>
+
+                <button
+                  className="galleryArrow right"
+                  onClick={goNext}
+                >
+                  ›
+                </button>
+              </>
+            )}
+
+            <img
+              className="modalMainImage"
+              src={resolveProductImage(activeImage)}
+              alt={product.name}
+            />
+          </div>
 
           {images.length > 1 && (
             <div className="modalThumbs">
-              {images.slice(0, 8).map((image, index) => (
-                <img
+              {images.map((image, index) => (
+                <button
                   key={`${image}-${index}`}
-                  src={resolveProductImage(image)}
-                  alt={`${product.name} imagen ${index + 1}`}
-                />
+                  className={`thumbButton ${
+                    activeImage === image ? 'active' : ''
+                  }`}
+                  onClick={() => setActiveImage(image)}
+                >
+                  <img
+                    src={resolveProductImage(image)}
+                    alt={`${product.name} imagen ${index + 1}`}
+                  />
+                </button>
               ))}
             </div>
           )}
@@ -576,7 +635,9 @@ function ProductModal({ product, onClose, addToCart }) {
 
         <div className="productDetail">
           <span className="tag">{product.category}</span>
+
           <h2>{product.name}</h2>
+
           <p>{product.description}</p>
 
           <div className={`stock large ${status.className}`}>
@@ -585,7 +646,10 @@ function ProductModal({ product, onClose, addToCart }) {
 
           <div className="specBox">
             <strong>Especificaciones</strong>
-            <span>{specs || 'Sin especificaciones agregadas'}</span>
+
+            <span>
+              {specs || 'Sin especificaciones agregadas'}
+            </span>
           </div>
 
           <div className="modalBuy">
@@ -594,14 +658,23 @@ function ProductModal({ product, onClose, addToCart }) {
 
               {discountPercent > 0 && (
                 <div className="discountInfo">
-                  <small className="oldPrice">{money(product.price)}</small>
-                  <span className="discountBadge">-{discountPercent}%</span>
+                  <small className="oldPrice">
+                    {money(product.price)}
+                  </small>
+
+                  <span className="discountBadge">
+                    -{discountPercent}%
+                  </span>
                 </div>
               )}
             </div>
 
-            <button disabled={product.stock <= 0} onClick={() => addToCart(product)}>
-              <ShoppingCart size={18} /> Agregar al carrito
+            <button
+              disabled={product.stock <= 0}
+              onClick={() => addToCart(product)}
+            >
+              <ShoppingCart size={18} />
+              Agregar al carrito
             </button>
           </div>
         </div>
