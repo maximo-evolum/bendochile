@@ -72,6 +72,27 @@ function normalizeGallery(gallery) {
   }
 }
 
+
+function productSpecs(product) {
+  return (
+    product?.specs ||
+    product?.specifications ||
+    product?.specification ||
+    product?.details ||
+    product?.short_description ||
+    product?.shortDescription ||
+    product?.dimensions ||
+    ''
+  )
+}
+
+function productGallery(product) {
+  const mainImage = product?.image ? [product.image] : []
+  const gallery = normalizeGallery(product?.gallery || product?.images || product?.photos)
+
+  return [...mainImage, ...gallery].filter(Boolean)
+}
+
 function getDiscountPercent(product) {
   const directPercent =
     product?.discountPercent ??
@@ -201,6 +222,8 @@ function App() {
       discountPercent: Number(form.discountPercent || 0),
       discount_percent: Number(form.discountPercent || 0),
       discount_active: Number(form.discountPercent || 0) > 0,
+      specifications: form.specs || '',
+      short_description: form.specs || '',
       discount_price: Number(form.discountPercent || 0) > 0
         ? Math.round(Number(form.price || 0) - (Number(form.price || 0) * Number(form.discountPercent || 0) / 100))
         : 0,
@@ -497,7 +520,7 @@ function ProductCard({ product, onProduct, addToCart }) {
 
         <h3>{product.name}</h3>
         <p>{product.description}</p>
-        <small>{product.specs || 'Sin especificaciones agregadas'}</small>
+        <small>{productSpecs(product) || 'Sin especificaciones agregadas'}</small>
 
         <div className="buyRow">
           <div className="priceBlock">
@@ -523,13 +546,33 @@ function ProductCard({ product, onProduct, addToCart }) {
 function ProductModal({ product, onClose, addToCart }) {
   const status = stockInfo(product.stock);
   const discountPercent = getDiscountPercent(product);
+  const images = productGallery(product);
+  const specs = productSpecs(product);
 
   return (
     <div className="modalBackdrop" onClick={onClose}>
       <section className="productModal" onClick={(event) => event.stopPropagation()}>
         <button className="close" onClick={onClose}><X size={20} /></button>
 
-        <img src={resolveProductImage(product.image)} alt={product.name} />
+        <div className="modalGallery">
+          <img
+            className="modalMainImage"
+            src={resolveProductImage(images[0] || product.image)}
+            alt={product.name}
+          />
+
+          {images.length > 1 && (
+            <div className="modalThumbs">
+              {images.slice(0, 8).map((image, index) => (
+                <img
+                  key={`${image}-${index}`}
+                  src={resolveProductImage(image)}
+                  alt={`${product.name} imagen ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="productDetail">
           <span className="tag">{product.category}</span>
@@ -542,7 +585,7 @@ function ProductModal({ product, onClose, addToCart }) {
 
           <div className="specBox">
             <strong>Especificaciones</strong>
-            <span>{product.specs || 'Sin especificaciones agregadas'}</span>
+            <span>{specs || 'Sin especificaciones agregadas'}</span>
           </div>
 
           <div className="modalBuy">

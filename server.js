@@ -38,7 +38,9 @@ CREATE TABLE IF NOT EXISTS products (
   name TEXT NOT NULL,
   slug TEXT DEFAULT '',
   description TEXT DEFAULT '',
+  specs TEXT DEFAULT '',
   short_description TEXT DEFAULT '',
+  specs TEXT DEFAULT '',
   price REAL DEFAULT 0,
   compare_price REAL DEFAULT 0,
   discount_percent REAL DEFAULT 0,
@@ -60,6 +62,7 @@ CREATE TABLE IF NOT EXISTS products (
   whatsapp_message TEXT DEFAULT '',
   seo_title TEXT DEFAULT '',
   seo_description TEXT DEFAULT '',
+  specs TEXT DEFAULT '',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -86,6 +89,7 @@ function ensureColumn(table, column, definition) {
 [
   ['slug', "TEXT DEFAULT ''"],
   ['short_description', "TEXT DEFAULT ''"],
+  ['specs', "TEXT DEFAULT ''"],
   ['compare_price', 'REAL DEFAULT 0'],
   ['discount_percent', 'REAL DEFAULT 0'],
   ['discount_price', 'REAL DEFAULT 0'],
@@ -137,6 +141,7 @@ function normalizeInputProduct(body = {}) {
     name: String(body.name || body.title || 'Producto').trim(),
     slug: String(body.slug || ''),
     description: String(body.description || body.desc || ''),
+    specs: String(body.specs || body.specifications || body.details || ''),
     short_description: String(body.short_description || body.shortDescription || ''),
     price: Number(body.price || 0),
     compare_price: Number(body.compare_price || body.comparePrice || 0),
@@ -165,6 +170,7 @@ function normalizeInputProduct(body = {}) {
 function normalizeOutputProduct(product) {
   return {
     ...product,
+    specs: product.specs || product.specifications || product.short_description || '',
     price: Number(product.price || 0),
     compare_price: Number(product.compare_price || 0),
     discount_percent: Number(product.discount_percent || 0),
@@ -245,12 +251,12 @@ app.post('/api/products', (req, res) => {
 
     const result = db.prepare(`
       INSERT INTO products (
-        name, slug, description, short_description, price, compare_price, discount_percent, discount_price, discount_active,
+        name, slug, description, specs, short_description, price, compare_price, discount_percent, discount_price, discount_active,
         stock, sku, barcode, category, subcategory, brand, tags, image,
         gallery, featured, active, weight, dimensions, whatsapp_message,
         seo_title, seo_description
       ) VALUES (
-        @name, @slug, @description, @short_description, @price, @compare_price, @discount_percent, @discount_price, @discount_active,
+        @name, @slug, @description, @specs, @short_description, @price, @compare_price, @discount_percent, @discount_price, @discount_active,
         @stock, @sku, @barcode, @category, @subcategory, @brand, @tags, @image,
         @gallery, @featured, @active, @weight, @dimensions, @whatsapp_message,
         @seo_title, @seo_description
@@ -281,6 +287,7 @@ app.put('/api/products/:id', (req, res) => {
         name=@name,
         slug=@slug,
         description=@description,
+        specs=@specs,
         short_description=@short_description,
         price=@price,
         compare_price=@compare_price,

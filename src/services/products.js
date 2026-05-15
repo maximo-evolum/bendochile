@@ -97,7 +97,11 @@ export async function getProducts() {
   const products = await safeJson(res)
 
   return Array.isArray(products)
-    ? products.map(normalizeProductDiscountFields)
+    ? products.map(normalizeProductDiscountFields).map((product) => ({
+        ...product,
+        specs: product.specs || product.specifications || product.short_description || '',
+        gallery: normalizeGallery(product.gallery || product.images || product.photos)
+      }))
     : []
 }
 
