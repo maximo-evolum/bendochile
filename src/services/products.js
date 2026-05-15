@@ -58,9 +58,47 @@ export function resolveProductImage(image) {
   return `/uploads/${imageName}`
 }
 
+
+function normalizeProductDiscountFields(product = {}) {
+  const price = Number(product.price || 0)
+  const storedPercent = Number(
+    product.discountPercent ??
+    product.discount_percent ??
+    product.discount ??
+    product.discount_percentage ??
+    0
+  )
+
+  const discountPrice = Number(
+    product.discount_price ??
+    product.discountPrice ??
+    0
+  )
+
+  let discountPercent = storedPercent
+
+  if ((!discountPercent || discountPercent <= 0) && price > 0 && discountPrice > 0 && discountPrice < price) {
+    discountPercent = Math.round(((price - discountPrice) / price) * 100)
+  }
+
+  return {
+    ...product,
+    discountPercent,
+    discount_percent: discountPercent,
+    discount_active: discountPercent > 0,
+    discount_price: discountPercent > 0
+      ? Math.round(price - (price * discountPercent / 100))
+      : 0
+  }
+}
+
 export async function getProducts() {
   const res = await fetch('/api/products')
-  return await safeJson(res)
+  const products = await safeJson(res)
+
+  return Array.isArray(products)
+    ? products.map(normalizeProductDiscountFields)
+    : []
 }
 
 export async function getPublicFallbackProducts() {
@@ -97,6 +135,16 @@ export async function saveProduct(product = {}) {
       product.image = `/uploads/${imageName}`
     }
   }
+
+  const price = Number(product.price || 0)
+  const discountPercent = Number(product.discountPercent || product.discount_percent || 0)
+
+  product.discountPercent = discountPercent
+  product.discount_percent = discountPercent
+  product.discount_active = discountPercent > 0
+  product.discount_price = discountPercent > 0
+    ? Math.round(price - (price * discountPercent / 100))
+    : 0
 
   const hasId = Boolean(product?.id)
 

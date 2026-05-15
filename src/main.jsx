@@ -39,6 +39,9 @@ const emptyForm = {
   image: '',
   gallery: [],
   discountPercent: '',
+  discount_percent: '',
+  discount_active: false,
+  discount_price: '',
   featured: false,
 };
 
@@ -69,17 +72,45 @@ function normalizeGallery(gallery) {
   }
 }
 
-function finalPrice(product) {
-  const price = Number(product.price || 0)
-  const percent = Number(product.discountPercent || 0)
+function getDiscountPercent(product) {
+  const directPercent =
+    product?.discountPercent ??
+    product?.discount_percent ??
+    product?.discount ??
+    product?.discount_percentage
 
-  if (!percent || percent <= 0) {
-    return price
+  const percent = Number(directPercent || 0)
+
+  if (percent > 0) {
+    return Math.min(99, Math.max(0, Math.round(percent)))
   }
 
-  return Math.round(
-    price - (price * percent / 100)
+  const price = Number(product?.price || 0)
+  const discountPrice = Number(
+    product?.discount_price ||
+    product?.discountPrice ||
+    product?.compare_price ||
+    product?.comparePrice ||
+    0
   )
+
+  if (price > 0 && discountPrice > 0 && discountPrice < price) {
+    return Math.round(((price - discountPrice) / price) * 100)
+  }
+
+  return 0
+}
+
+function finalPrice(product) {
+  const price = Number(product?.price || 0)
+  const percent = getDiscountPercent(product)
+
+  if (!percent || percent <= 0) {
+    const discountPrice = Number(product?.discount_price || product?.discountPrice || 0)
+    return discountPrice > 0 && discountPrice < price ? discountPrice : price
+  }
+
+  return Math.round(price - (price * percent / 100))
 }
 
 function App() {
@@ -168,6 +199,11 @@ function App() {
       image: form.image || '',
       gallery: normalizeGallery(form.gallery),
       discountPercent: Number(form.discountPercent || 0),
+      discount_percent: Number(form.discountPercent || 0),
+      discount_active: Number(form.discountPercent || 0) > 0,
+      discount_price: Number(form.discountPercent || 0) > 0
+        ? Math.round(Number(form.price || 0) - (Number(form.price || 0) * Number(form.discountPercent || 0) / 100))
+        : 0,
     };
 
     try {
@@ -185,7 +221,7 @@ function App() {
       ...product,
       price: String(product.price || ''),
       stock: String(product.stock || ''),
-      discountPercent: String(product.discountPercent || ''),
+      discountPercent: String(getDiscountPercent(product) || ''),
       gallery: normalizeGallery(product.gallery),
     });
 
@@ -445,36 +481,33 @@ function CategoryTile({ title, index, setCategory }) {
 
 function ProductCard({ product, onProduct, addToCart }) {
   const status = stockInfo(product.stock);
+  const discountPercent = getDiscountPercent(product);
+
   return (
     <article className="card">
-      <button className="imageButton" onClick={() => onProduct(product)}><img src={resolveProductImage(product.image)} alt={product.name} /></button>
+      <button className="imageButton" onClick={() => onProduct(product)}>
+        <img src={resolveProductImage(product.image)} alt={product.name} />
+      </button>
+
       <div className="cardBody">
-        <div className="row"><span className="tag">{product.category}</span><span className={`stock ${status.className}`}>{status.label}: {product.stock}</span></div>
+        <div className="row">
+          <span className="tag">{product.category}</span>
+          <span className={`stock ${status.className}`}>{status.label}: {product.stock}</span>
+        </div>
+
         <h3>{product.name}</h3>
         <p>{product.description}</p>
         <small>{product.specs || 'Sin especificaciones agregadas'}</small>
+
         <div className="buyRow">
           <div className="priceBlock">
-            <>
-  <strong>{money(finalPrice(product))}</strong>
+            <strong>{money(finalPrice(product))}</strong>
 
-  {Number(product.discountPercent || 0) > 0 && (
-    <div className="discountInfo">
-      <small className="oldPrice">
-        {money(product.price)}
-      </small>
-
-      <span className="discountBadge">
-        -{product.discountPercent}%
-      </span>
-    </div>
-  )}
-</>
-            {Number(product.discountPercent || 0) > 0 && (
-              <>
-                <small className="oldPrice">{money(finalPrice(product))}</small>
-                <span className="discountBadge">-{product.discountPercent}%</span>
-              </>
+            {discountPercent > 0 && (
+              <div className="discountInfo">
+                <small className="oldPrice">{money(product.price)}</small>
+                <span className="discountBadge">-{discountPercent}%</span>
+              </div>
             )}
           </div>
 
@@ -489,46 +522,45 @@ function ProductCard({ product, onProduct, addToCart }) {
 
 function ProductModal({ product, onClose, addToCart }) {
   const status = stockInfo(product.stock);
+  const discountPercent = getDiscountPercent(product);
+
   return (
     <div className="modalBackdrop" onClick={onClose}>
       <section className="productModal" onClick={(event) => event.stopPropagation()}>
         <button className="close" onClick={onClose}><X size={20} /></button>
+
         <img src={resolveProductImage(product.image)} alt={product.name} />
+
         <div className="productDetail">
           <span className="tag">{product.category}</span>
           <h2>{product.name}</h2>
           <p>{product.description}</p>
-          <div className={`stock large ${status.className}`}>{status.label}: {product.stock} unidades</div>
-          <div className="specBox"><strong>Especificaciones</strong><span>{product.specs || 'Sin especificaciones agregadas'}</span></div>
-          <div className="modalBuy"><div className="priceBlock">
-  <>
-  <strong>{money(finalPrice(product))}</strong>
 
-  {Number(product.discountPercent || 0) > 0 && (
-    <div className="discountInfo">
-      <small className="oldPrice">
-        {money(product.price)}
-      </small>
+          <div className={`stock large ${status.className}`}>
+            {status.label}: {product.stock} unidades
+          </div>
 
-      <span className="discountBadge">
-        -{product.discountPercent}%
-      </span>
-    </div>
-  )}
-</>
+          <div className="specBox">
+            <strong>Especificaciones</strong>
+            <span>{product.specs || 'Sin especificaciones agregadas'}</span>
+          </div>
 
-  {Number(product.discountPercent || 0) > 0 && (
-    <>
-      <small className="oldPrice">
-        {money(finalPrice(product))}
-      </small>
+          <div className="modalBuy">
+            <div className="priceBlock">
+              <strong>{money(finalPrice(product))}</strong>
 
-      <span className="discountBadge">
-        -{product.discountPercent}%
-      </span>
-    </>
-  )}
-</div><button disabled={product.stock <= 0} onClick={() => addToCart(product)}><ShoppingCart size={18} /> Agregar al carrito</button></div>
+              {discountPercent > 0 && (
+                <div className="discountInfo">
+                  <small className="oldPrice">{money(product.price)}</small>
+                  <span className="discountBadge">-{discountPercent}%</span>
+                </div>
+              )}
+            </div>
+
+            <button disabled={product.stock <= 0} onClick={() => addToCart(product)}>
+              <ShoppingCart size={18} /> Agregar al carrito
+            </button>
+          </div>
         </div>
       </section>
     </div>
@@ -537,22 +569,53 @@ function ProductModal({ product, onClose, addToCart }) {
 
 function CartDrawer({ cart, open, onClose, changeQty, removeFromCart }) {
   const total = cart.reduce((sum, item) => sum + finalPrice(item) * item.qty, 0);
-  const message = encodeURIComponent(`Hola, quiero cotizar/comprar estos productos:\n${cart.map((item) => `- ${item.name} x${item.qty}: ${money(finalPrice(item) * item.qty)}`).join('\n')}\nTotal estimado: ${money(total)}`);
+  const message = encodeURIComponent(`Hola, quiero cotizar/comprar estos productos:
+${cart.map((item) => `- ${item.name} x${item.qty}: ${money(finalPrice(item) * item.qty)}`).join('
+')}
+Total estimado: ${money(total)}`);
 
   return (
     <aside className={`cartDrawer ${open ? 'open' : ''}`}>
       <div className="cartHeader"><h3>Carrito</h3><button onClick={onClose}><X size={20} /></button></div>
+
       <div className="cartItems">
         {cart.length === 0 && <p className="empty">Agrega productos para generar una cotización rápida.</p>}
-        {cart.map((item) => (
-          <div className="cartItem" key={item.id}>
-            <img src={resolveProductImage(item.image)} alt={item.name} />
-            <div><strong>{item.name}</strong><small>{money(finalPrice(item))}</small><div className="qty"><button onClick={() => changeQty(item.id, -1)}><Minus size={14} /></button><span>{item.qty}</span><button onClick={() => changeQty(item.id, 1)}><Plus size={14} /></button></div></div>
-            <button className="remove" onClick={() => removeFromCart(item.id)}><Trash2 size={16} /></button>
-          </div>
-        ))}
+
+        {cart.map((item) => {
+          const discountPercent = getDiscountPercent(item);
+
+          return (
+            <div className="cartItem" key={item.id}>
+              <img src={resolveProductImage(item.image)} alt={item.name} />
+
+              <div>
+                <strong>{item.name}</strong>
+                <small>{money(finalPrice(item))}</small>
+
+                {discountPercent > 0 && (
+                  <div className="discountInfo mini">
+                    <small className="oldPrice">{money(item.price)}</small>
+                    <span className="discountBadge">-{discountPercent}%</span>
+                  </div>
+                )}
+
+                <div className="qty">
+                  <button onClick={() => changeQty(item.id, -1)}><Minus size={14} /></button>
+                  <span>{item.qty}</span>
+                  <button onClick={() => changeQty(item.id, 1)}><Plus size={14} /></button>
+                </div>
+              </div>
+
+              <button className="remove" onClick={() => removeFromCart(item.id)}><Trash2 size={16} /></button>
+            </div>
+          );
+        })}
       </div>
-      <div className="cartFooter"><div><span>Total</span><strong>{money(total)}</strong></div><a className="primary whatsapp" href={`https://wa.me/56962002398?text=${message}`} target="_blank" rel="noreferrer">Comprar por WhatsApp</a></div>
+
+      <div className="cartFooter">
+        <div><span>Total</span><strong>{money(total)}</strong></div>
+        <a className="primary whatsapp" href={`https://wa.me/56962002398?text=${message}`} target="_blank" rel="noreferrer">Comprar por WhatsApp</a>
+      </div>
     </aside>
   );
 }
@@ -631,7 +694,10 @@ function Admin({ form, setForm, saveProduct, products, deleteProduct, updateStoc
             {products.map((product) => (
               <div className="inventoryItem" key={product.id}>
                 <img src={resolveProductImage(product.image)} alt={product.name} />
-                <div><strong>{product.name}</strong><small>{product.category} • {money(finalPrice(product))}</small></div>
+                <div>
+                  <strong>{product.name}</strong>
+                  <small>{product.category} • {money(finalPrice(product))}{getDiscountPercent(product) > 0 ? ` • -${getDiscountPercent(product)}%` : ''}</small>
+                </div>
                 <input type="number" value={product.stock} onChange={(event) => updateStock(product.id, event.target.value)} />
                 <button className="ghost" onClick={() => editProduct(product)} title="Editar"><Eye size={16} /></button>
                 <button className="ghost danger" onClick={() => deleteProduct(product.id)} title="Eliminar"><Trash2 size={16} /></button>
