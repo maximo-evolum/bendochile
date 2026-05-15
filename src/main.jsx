@@ -569,10 +569,18 @@ function ProductModal({ product, onClose, addToCart }) {
 
 function CartDrawer({ cart, open, onClose, changeQty, removeFromCart }) {
   const total = cart.reduce((sum, item) => sum + finalPrice(item) * item.qty, 0);
-  const message = encodeURIComponent(`Hola, quiero cotizar/comprar estos productos:
-${cart.map((item) => `- ${item.name} x${item.qty}: ${money(finalPrice(item) * item.qty)}`).join('
-')}
-Total estimado: ${money(total)}`);
+  const message = encodeURIComponent(
+    `Hola, quiero cotizar/comprar estos productos:
+${cart
+      .map(
+        (item) =>
+          `- ${item.name} x${item.qty}: ${money(
+            finalPrice(item) * item.qty
+          )}`
+      )
+      .join('\n')}
+Total estimado: ${money(total)}`
+  );
 
   return (
     <aside className={`cartDrawer ${open ? 'open' : ''}`}>
