@@ -392,7 +392,7 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
           {featured.map((product) => (
             <div className="miniProduct" key={product.id}>
               <img src={resolveProductImage(product.image)} alt={product.name} />
-              <div><strong>{product.name}</strong><small>{money(product.price)}</small></div>
+              <div><strong>{product.name}</strong><small>{money(finalPrice(product))}</small></div>
               <span>{product.stock}</span>
             </div>
           ))}
@@ -455,10 +455,24 @@ function ProductCard({ product, onProduct, addToCart }) {
         <small>{product.specs || 'Sin especificaciones agregadas'}</small>
         <div className="buyRow">
           <div className="priceBlock">
-            <strong>{money(finalPrice(product))}</strong>
+            <>
+  <strong>{money(finalPrice(product))}</strong>
+
+  {Number(product.discountPercent || 0) > 0 && (
+    <div className="discountInfo">
+      <small className="oldPrice">
+        {money(product.price)}
+      </small>
+
+      <span className="discountBadge">
+        -{product.discountPercent}%
+      </span>
+    </div>
+  )}
+</>
             {Number(product.discountPercent || 0) > 0 && (
               <>
-                <small className="oldPrice">{money(product.price)}</small>
+                <small className="oldPrice">{money(finalPrice(product))}</small>
                 <span className="discountBadge">-{product.discountPercent}%</span>
               </>
             )}
@@ -487,12 +501,26 @@ function ProductModal({ product, onClose, addToCart }) {
           <div className={`stock large ${status.className}`}>{status.label}: {product.stock} unidades</div>
           <div className="specBox"><strong>Especificaciones</strong><span>{product.specs || 'Sin especificaciones agregadas'}</span></div>
           <div className="modalBuy"><div className="priceBlock">
+  <>
   <strong>{money(finalPrice(product))}</strong>
+
+  {Number(product.discountPercent || 0) > 0 && (
+    <div className="discountInfo">
+      <small className="oldPrice">
+        {money(product.price)}
+      </small>
+
+      <span className="discountBadge">
+        -{product.discountPercent}%
+      </span>
+    </div>
+  )}
+</>
 
   {Number(product.discountPercent || 0) > 0 && (
     <>
       <small className="oldPrice">
-        {money(product.price)}
+        {money(finalPrice(product))}
       </small>
 
       <span className="discountBadge">
@@ -603,7 +631,7 @@ function Admin({ form, setForm, saveProduct, products, deleteProduct, updateStoc
             {products.map((product) => (
               <div className="inventoryItem" key={product.id}>
                 <img src={resolveProductImage(product.image)} alt={product.name} />
-                <div><strong>{product.name}</strong><small>{product.category} • {money(product.price)}</small></div>
+                <div><strong>{product.name}</strong><small>{product.category} • {money(finalPrice(product))}</small></div>
                 <input type="number" value={product.stock} onChange={(event) => updateStock(product.id, event.target.value)} />
                 <button className="ghost" onClick={() => editProduct(product)} title="Editar"><Eye size={16} /></button>
                 <button className="ghost danger" onClick={() => deleteProduct(product.id)} title="Eliminar"><Trash2 size={16} /></button>

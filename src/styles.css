@@ -192,3 +192,27 @@ footer{display:grid;grid-template-columns:1fr .45fr;gap:40px;background:linear-g
   font-size: .75rem;
   font-weight: 700;
 }
+
+
+.discountInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.oldPrice {
+  text-decoration: line-through;
+  opacity: .65;
+  font-size: .85rem;
+}
+
+.discountBadge {
+  background: #ffeded;
+  color: #d11;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+}
