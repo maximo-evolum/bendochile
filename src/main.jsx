@@ -430,64 +430,198 @@ function LoginPage({ onLogin, message }) {
   );
 }
 
+
+function productBadges(product) {
+  const badges = []
+
+  if (getDiscountPercent(product) > 0) badges.push('Oferta')
+  if (product.featured) badges.push('Viral')
+  if (Number(product.stock || 0) > 0 && Number(product.stock || 0) <= 5) badges.push('Últimas unidades')
+  if (Number(product.stock || 0) > 5) badges.push('Stock limitado')
+
+  return badges.slice(0, 2)
+}
+
+function pickProducts(products, predicate, limit = 4) {
+  const selected = products.filter(predicate)
+
+  return selected.length > 0
+    ? selected.slice(0, limit)
+    : products.slice(0, limit)
+}
+
 function Store({ products, allProducts, query, setQuery, category, setCategory, onProduct, addToCart }) {
-  const featured = allProducts.filter((product) => product.featured).slice(0, 3);
+  const [email, setEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState('');
+  const featured = pickProducts(allProducts, (product) => product.featured || getDiscountPercent(product) > 0, 3);
+  const bestSellers = pickProducts(allProducts, (product) => product.featured || Number(product.stock || 0) <= 8, 4);
+  const offers = pickProducts(allProducts, (product) => getDiscountPercent(product) > 0, 4);
+  const viral = pickProducts(allProducts, (product) => product.featured, 4);
+
+  const submitNewsletter = (event) => {
+    event.preventDefault();
+
+    if (!email || !email.includes('@')) {
+      setNewsletterStatus('Ingresa un correo válido para recibir novedades.');
+      return;
+    }
+
+    const saved = JSON.parse(localStorage.getItem('bendo_newsletter') || '[]');
+    localStorage.setItem('bendo_newsletter', JSON.stringify([...new Set([...saved, email])]));
+    setEmail('');
+    setNewsletterStatus('Listo. Te avisaremos cuando lleguen nuevas ofertas virales.');
+  };
 
   return (
     <>
-      <section className="hero">
+      <div className="topPromo">
+        <span>🔥 PRODUCTOS VIRALES</span>
+        <span>•</span>
+        <span>STOCK LIMITADO</span>
+        <span>•</span>
+        <span>OFERTAS REALES HOY</span>
+      </div>
+
+      <section className="hero bendoHero">
         <div className="heroGlow" />
+
         <div className="heroContent">
-          <p className="eyebrow">Premium market</p>
-          <h1>Productos esenciales para tu vida diaria.</h1>
-          <p>Una tienda simple, profesional y rápida para ferretería, abarrotes, hogar y limpieza.</p>
+          <p className="eyebrow">BENDOCHILE.CL</p>
+          <h1>Todo lo que quieres. Más rápido. Más simple.</h1>
+          <p>Productos virales, tecnología, hogar y ofertas reales en un solo lugar. Compra fácil y cierra tu pedido directo por WhatsApp.</p>
+
           <div className="heroActions">
-            <a href="#productos" className="cta">Ver catálogo <ChevronRight size={18} /></a>
+            <a href="#ofertas" className="cta">Ver ofertas <ChevronRight size={18} /></a>
             <a href="#experiencia" className="secondaryCta">Cómo funciona</a>
           </div>
+
+          <div className="trustStrip">
+            <span>✔ Compra segura</span>
+            <span>✔ Envíos rápidos</span>
+            <span>✔ Atención personalizada</span>
+          </div>
         </div>
-        <div className="heroCard">
-          <div className="heroCardTop"><Sparkles size={18} /> Stock en vivo</div>
+
+        <div className="heroCard viralHeroCard">
+          <div className="heroCardTop"><Sparkles size={18} /> Tendencias BENDO</div>
+
           {featured.map((product) => (
-            <div className="miniProduct" key={product.id}>
+            <button className="miniProduct" key={product.id} onClick={() => onProduct(product)}>
               <img src={resolveProductImage(product.image)} alt={product.name} />
-              <div><strong>{product.name}</strong><small>{money(finalPrice(product))}</small></div>
-              <span>{product.stock}</span>
-            </div>
+              <div>
+                <strong>{product.name}</strong>
+                <small>{money(finalPrice(product))}</small>
+              </div>
+              {getDiscountPercent(product) > 0 ? <span>-{getDiscountPercent(product)}%</span> : <span>{product.stock}</span>}
+            </button>
           ))}
+
+          {featured.length === 0 && (
+            <div className="emptyHeroCard">Agrega productos destacados desde el admin para llenar esta zona.</div>
+          )}
         </div>
       </section>
 
-      <section id="experiencia" className="experience section">
-        <div className="sectionTitle compact"><p className="eyebrow dark">Experiencia ecommerce</p><h2>Diseñada para vender sin saturar.</h2></div>
+      <section id="experiencia" className="experience section trustSection">
+        <div className="sectionTitle compact">
+          <p className="eyebrow dark">Compra simple, atención real</p>
+          <h2>La tienda está optimizada para vender por WhatsApp.</h2>
+        </div>
+
         <div className="experienceGrid">
-          <Feature icon={<Truck />} title="Despacho claro" text=" Coordinar entrega o retiro por WhatsApp." />
-          <Feature icon={<ShieldCheck />} title="Compra confiable" text="Cards limpias, precios visibles y estados de stock transparentes." />
-          <Feature icon={<Boxes />} title="Inventario visible" text="El stock en tiempo real para su seguridad." />
+          <Feature icon={<ShieldCheck />} title="Compra segura" text="Catálogo claro, productos seleccionados y atención personalizada." />
+          <Feature icon={<Truck />} title="Envíos rápidos" text="Coordina entrega o retiro directamente por WhatsApp." />
+          <Feature icon={<Boxes />} title="Stock limitado" text="Mira disponibilidad y últimas unidades antes de consultar." />
+        </div>
+      </section>
+
+      <section className="highlightSection section">
+        <div className="sectionTitle">
+          <h2>Destacados de la semana</h2>
+          <span>Viral • Ofertas • Top ventas</span>
+        </div>
+
+        <div className="highlightGrid">
+          <HighlightShelf title="Más vendidos esta semana" products={bestSellers} onProduct={onProduct} />
+          <HighlightShelf title="Ofertas" products={offers} onProduct={onProduct} />
+          <HighlightShelf title="Viral" products={viral} onProduct={onProduct} />
         </div>
       </section>
 
       <section className="categoryShowcase section">
-        <div className="sectionTitle"><h2>Categorías principales</h2><span>Compra rápida</span></div>
-        <div className="categoryGrid">
-          {['Ferretería', 'Abarrotes', 'Hogar', 'Limpieza'].map((item, index) => <CategoryTile key={item} title={item} index={index} setCategory={setCategory} />)}
+        <div className="sectionTitle">
+          <h2>Categorías principales</h2>
+          <span>Compra rápida</span>
         </div>
+
+        <div className="categoryGrid">
+          {['Ferretería', 'Abarrotes', 'Hogar', 'Limpieza'].map((item, index) => (
+            <CategoryTile key={item} title={item} index={index} setCategory={setCategory} />
+          ))}
+        </div>
+      </section>
+
+      <section id="ofertas" className="urgencyBand section">
+        <div>
+          <p className="eyebrow dark">Urgencia visual</p>
+          <h2>Ofertas y stock limitado</h2>
+          <p>Revisa los productos con descuento, últimas unidades y artículos destacados antes de que se agoten.</p>
+        </div>
+        <a href="#productos" className="cta">Ir al catálogo</a>
       </section>
 
       <section id="productos" className="catalog section">
-        <div className="sectionTitle"><h2>Catálogo</h2><span>{products.length} productos</span></div>
-        <div className="toolbar">
-          <div className="searchBox"><Search size={18} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar producto, descripción o categoría" /></div>
-          <div className="chips">{categories.map((item) => <button key={item} onClick={() => setCategory(item)} className={category === item ? 'selected' : ''}>{item}</button>)}</div>
+        <div className="sectionTitle">
+          <h2>Catálogo BENDO</h2>
+          <span>{products.length} productos</span>
         </div>
+
+        <div className="toolbar">
+          <div className="searchBox">
+            <Search size={18} />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar producto, descripción o categoría" />
+          </div>
+
+          <div className="chips">
+            {categories.map((item) => (
+              <button key={item} onClick={() => setCategory(item)} className={category === item ? 'selected' : ''}>
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="grid">
-          {products.map((product) => <ProductCard key={product.id} product={product} onProduct={onProduct} addToCart={addToCart} />)}
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} onProduct={onProduct} addToCart={addToCart} />
+          ))}
         </div>
       </section>
 
+      <section className="newsletter section">
+        <div>
+          <p className="eyebrow dark">Novedades y ofertas</p>
+          <h2>Recibe productos virales antes que todos.</h2>
+          <p>Deja tu correo para enterarte de nuevos productos, descuentos y stock limitado.</p>
+        </div>
+
+        <form onSubmit={submitNewsletter}>
+          <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder="tu correo" type="email" />
+          <button className="primary">Recibir ofertas</button>
+          {newsletterStatus && <small>{newsletterStatus}</small>}
+        </form>
+      </section>
+
       <footer>
-        <div><h2 className="footerLogo"><span className="bendoTextLogo footerTextLogo">BENDO<span>.</span></span></h2><p>Tienda enfocada en productos esenciales para el hogar, trabajo y vida diaria.</p></div>
-        <div><h4>Contacto</h4><p>WhatsApp: +56962002398<br />Santiago, Chile</p></div>
+        <div>
+          <h2 className="footerLogo"><span className="bendoTextLogo footerTextLogo">BENDO<span>.</span></span></h2>
+          <p>Productos virales, hogar, tecnología y ofertas reales. Sin pago online por ahora: cierre directo y personalizado por WhatsApp.</p>
+        </div>
+
+        <div>
+          <h4>Contacto</h4>
+          <p>WhatsApp: +56962002398<br />Santiago, Chile</p>
+        </div>
       </footer>
     </>
   );
@@ -495,6 +629,26 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
 
 function Feature({ icon, title, text }) {
   return <article className="feature"><div>{icon}</div><h3>{title}</h3><p>{text}</p></article>;
+}
+
+
+function HighlightShelf({ title, products, onProduct }) {
+  return (
+    <article className="highlightShelf">
+      <h3>{title}</h3>
+
+      <div>
+        {products.map((product) => (
+          <button key={product.id} onClick={() => onProduct(product)}>
+            <img src={resolveProductImage(product.image)} alt={product.name} />
+            <span>{product.name}</span>
+            <strong>{money(finalPrice(product))}</strong>
+            {getDiscountPercent(product) > 0 && <em>-{getDiscountPercent(product)}%</em>}
+          </button>
+        ))}
+      </div>
+    </article>
+  );
 }
 
 function CategoryTile({ title, index, setCategory }) {
@@ -509,6 +663,9 @@ function ProductCard({ product, onProduct, addToCart }) {
   return (
     <article className="card">
       <button className="imageButton" onClick={() => onProduct(product)}>
+        <div className="cardBadges">
+          {productBadges(product).map((badge) => <span key={badge}>{badge}</span>)}
+        </div>
         <img src={resolveProductImage(product.image)} alt={product.name} />
       </button>
 
@@ -759,7 +916,7 @@ function Admin({ form, setForm, saveProduct, products, deleteProduct, updateStoc
 
   return (
     <main className="admin">
-      <div className="adminIntro"><p className="eyebrow dark">Panel administrativo real</p><h1>Catálogo conectado a base de datos y stock en vivo.</h1><p>Sesión activa: <strong>{adminUser?.username}</strong> ({adminUser?.role}). Los productos se guardan en Supabase y cualquier cambio de stock se refleja al instante en la tienda.</p><div className="adminIntroActions"><div className="liveStatus">{apiStatus}</div><button className="ghostText" onClick={logoutAdmin}>Cerrar sesión</button></div></div>
+      <div className="adminIntro"><p className="eyebrow dark">Panel administrativo real</p><h1>Catálogo conectado a base de datos y stock en vivo.</h1><p>Sesión activa: <strong>{adminUser?.username}</strong> ({adminUser?.role}). Los productos se guardan en SQLite y cualquier cambio de stock se refleja en la tienda.</p><div className="adminIntroActions"><div className="liveStatus">{apiStatus}</div><button className="ghostText" onClick={logoutAdmin}>Cerrar sesión</button></div></div>
       <div className="statsGrid">
         <Stat icon={<Package />} label="Productos" value={products.length} />
         <Stat icon={<Boxes />} label="Stock total" value={totalStock} />

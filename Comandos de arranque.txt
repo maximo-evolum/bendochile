@@ -6,10 +6,9 @@ admin3
 admin4
 Contraseña temporal para todos: admin123
 
-cd "C:\Users\maxim\OneDrive\Escritorio\novamarketdemo\backend"
+SOLO EN LOS EQUIPOS NUEVOS
 node server.js
-npm install
-npm run dev
+
 
 LIMPIAR DEPENDENCIAS SI HAY ERRORES
 
@@ -29,7 +28,7 @@ git config --global user.email "maximo.jara@evolum.cl"
 CREAR RAMA MAIN
 git branch -M main
 
-CONECTAR GITHUB
+CONECTAR GITHUB  (SOLO EN EQUIPOS NUEVOS)
 git remote add origin https://github.com/maximo-evolum/bendochile.git
 
 SUBIR CAMBIOS A GITHUB
@@ -40,9 +39,10 @@ git push -u origin main --force
 BUILD PRODUCCIÓN
 npm run build
 
-CORRER PRODUCCIÓN
-npm start
-
 ACTUALIZAR RAILWAY  
 Solo hacer:
 git push
+
+CORRER PRODUCCIÓN
+npm start
+npm run dev
