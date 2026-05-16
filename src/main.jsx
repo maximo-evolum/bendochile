@@ -512,7 +512,9 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
                 <strong>{product.name}</strong>
                 <small>{money(finalPrice(product))}</small>
               </div>
-              {getDiscountPercent(product) > 0 ? <span>-{getDiscountPercent(product)}%</span> : <span>{product.stock}</span>}
+              {getDiscountPercent(product) > 0 && (
+                <span>-{getDiscountPercent(product)}%</span>
+              )}
             </button>
           ))}
 
@@ -535,9 +537,9 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
         </div>
       </section>
 
-      <section className="highlightSection section">
+      <section className="highlightSection section premiumHighlights">
         <div className="sectionTitle">
-          <h2>Destacados de la semana</h2>
+          <h2>🔥 Destacados de la semana</h2>
           <span>Viral • Ofertas • Top ventas</span>
         </div>
 
@@ -545,19 +547,6 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
           <HighlightShelf title="Más vendidos esta semana" products={bestSellers} onProduct={onProduct} />
           <HighlightShelf title="Ofertas" products={offers} onProduct={onProduct} />
           <HighlightShelf title="Viral" products={viral} onProduct={onProduct} />
-        </div>
-      </section>
-
-      <section className="categoryShowcase section">
-        <div className="sectionTitle">
-          <h2>Categorías principales</h2>
-          <span>Compra rápida</span>
-        </div>
-
-        <div className="categoryGrid">
-          {['Ferretería', 'Abarrotes', 'Hogar', 'Limpieza'].map((item, index) => (
-            <CategoryTile key={item} title={item} index={index} setCategory={setCategory} />
-          ))}
         </div>
       </section>
 
