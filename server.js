@@ -55,6 +55,9 @@ CREATE TABLE IF NOT EXISTS products (
   tags TEXT DEFAULT '[]',
   image TEXT DEFAULT '',
   gallery TEXT DEFAULT '[]',
+  options TEXT DEFAULT '[]',
+  star_product INTEGER DEFAULT 0,
+  carousel_product INTEGER DEFAULT 0,
   featured INTEGER DEFAULT 0,
   active INTEGER DEFAULT 1,
   weight REAL DEFAULT 0,
@@ -100,6 +103,9 @@ function ensureColumn(table, column, definition) {
   ['brand', "TEXT DEFAULT ''"],
   ['tags', "TEXT DEFAULT '[]'"],
   ['gallery', "TEXT DEFAULT '[]'"],
+  ['options', "TEXT DEFAULT '[]'"],
+  ['star_product', 'INTEGER DEFAULT 0'],
+  ['carousel_product', 'INTEGER DEFAULT 0'],
   ['featured', 'INTEGER DEFAULT 0'],
   ['active', 'INTEGER DEFAULT 1'],
   ['weight', 'REAL DEFAULT 0'],
@@ -157,6 +163,9 @@ function normalizeInputProduct(body = {}) {
     tags: JSON.stringify(parseJsonArray(body.tags)),
     image: String(body.image || body.imageUrl || body.img || ''),
     gallery: JSON.stringify(parseJsonArray(body.gallery)),
+    options: JSON.stringify(parseJsonArray(body.options || body.variants || body.product_options)),
+    star_product: body.star_product || body.starProduct || body.is_star ? 1 : 0,
+    carousel_product: body.carousel_product || body.carouselProduct ? 1 : 0,
     featured: body.featured ? 1 : 0,
     active: body.active === false || body.active === 0 ? 0 : 1,
     weight: Number(body.weight || 0),
@@ -182,7 +191,14 @@ function normalizeOutputProduct(product) {
     active: Boolean(product.active),
     weight: Number(product.weight || 0),
     tags: parseJsonArray(product.tags),
-    gallery: parseJsonArray(product.gallery)
+    gallery: parseJsonArray(product.gallery),
+    options: parseJsonArray(product.options),
+    variants: parseJsonArray(product.options),
+    product_options: parseJsonArray(product.options),
+    starProduct: Boolean(product.star_product),
+    star_product: Boolean(product.star_product),
+    carouselProduct: Boolean(product.carousel_product),
+    carousel_product: Boolean(product.carousel_product)
   };
 }
 
@@ -253,12 +269,12 @@ app.post('/api/products', (req, res) => {
       INSERT INTO products (
         name, slug, description, specs, short_description, price, compare_price, discount_percent, discount_price, discount_active,
         stock, sku, barcode, category, subcategory, brand, tags, image,
-        gallery, featured, active, weight, dimensions, whatsapp_message,
+        gallery, options, star_product, carousel_product, featured, active, weight, dimensions, whatsapp_message,
         seo_title, seo_description
       ) VALUES (
         @name, @slug, @description, @specs, @short_description, @price, @compare_price, @discount_percent, @discount_price, @discount_active,
         @stock, @sku, @barcode, @category, @subcategory, @brand, @tags, @image,
-        @gallery, @featured, @active, @weight, @dimensions, @whatsapp_message,
+        @gallery, @options, @star_product, @carousel_product, @featured, @active, @weight, @dimensions, @whatsapp_message,
         @seo_title, @seo_description
       )
     `).run(product);
@@ -303,6 +319,9 @@ app.put('/api/products/:id', (req, res) => {
         tags=@tags,
         image=@image,
         gallery=@gallery,
+        options=@options,
+        star_product=@star_product,
+        carousel_product=@carousel_product,
         featured=@featured,
         active=@active,
         weight=@weight,

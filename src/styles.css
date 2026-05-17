@@ -2101,3 +2101,376 @@ textarea {
     font-size: 1.8rem !important;
   }
 }
+
+
+/* =========================================================
+   BENDO VARIANTS + STAR PRODUCT + CAROUSEL
+========================================================= */
+
+.starProductSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+  gap: 30px;
+  align-items: stretch;
+  width: min(1180px, calc(100% - 40px)) !important;
+  margin: 60px auto 80px !important;
+  padding: 22px;
+  border-radius: 34px;
+  background: linear-gradient(135deg, #0B0B0D, #1A1A1F);
+  color: #fff;
+  box-shadow: 0 30px 90px rgba(0,0,0,.18);
+}
+
+.starProductMedia {
+  position: relative;
+  min-height: 360px;
+  border-radius: 28px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255,106,0,.22), transparent 24rem),
+    #111;
+}
+
+.starProductMedia > span {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 3;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FF6A00, #FF8C3A);
+  font-size: .75rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.starProductMedia img {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: contain;
+  padding: 40px;
+}
+
+.starProductInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(22px, 4vw, 46px);
+}
+
+.starProductInfo h2 {
+  margin: 8px 0 14px;
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+  line-height: .92;
+  letter-spacing: -.07em;
+}
+
+.starProductInfo p {
+  color: #cfcfd8;
+  line-height: 1.65;
+}
+
+.starBenefits {
+  display: grid;
+  gap: 9px;
+  margin: 18px 0;
+}
+
+.starBenefits span {
+  display: inline-flex;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  font-size: .86rem;
+  font-weight: 800;
+}
+
+.starPrice {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  margin: 8px 0 22px;
+}
+
+.starPrice strong {
+  color: #FF6A00;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1;
+}
+
+.starPrice small {
+  color: #A7A7B0;
+  text-decoration: line-through;
+  font-weight: 800;
+}
+
+.relevanceCarousel {
+  width: min(1180px, calc(100% - 40px)) !important;
+  margin: 40px auto 80px !important;
+}
+
+.carouselTrack {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(220px, 280px);
+  gap: 18px;
+  overflow-x: auto;
+  padding: 8px 4px 18px;
+  scroll-snap-type: x mandatory;
+}
+
+.carouselProduct {
+  scroll-snap-align: start;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 24px;
+  padding: 14px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 18px 44px rgba(0,0,0,.06);
+}
+
+.carouselProduct img {
+  width: 100%;
+  height: 170px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 18px;
+}
+
+.carouselProduct div {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.carouselProduct strong {
+  color: #111;
+  font-size: .95rem;
+}
+
+.carouselProduct span {
+  color: #FF6A00;
+  font-weight: 900;
+}
+
+.carouselProduct em {
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ffeded;
+  color: #d11;
+  font-style: normal;
+  font-size: .75rem;
+  font-weight: 900;
+}
+
+.optionHint {
+  display: block;
+  color: #FF6A00 !important;
+  font-weight: 800;
+}
+
+.variantBox {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 22px;
+  background: #fff;
+}
+
+.variantBox > strong {
+  font-size: .95rem;
+}
+
+.variantBox label {
+  display: grid;
+  gap: 6px;
+  font-size: .82rem;
+  font-weight: 900;
+  color: #333;
+}
+
+.variantBox select {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 14px;
+  padding: 0 12px;
+  background: #fafafa;
+}
+
+.cartOptions {
+  display: block;
+  color: #FF6A00 !important;
+  font-weight: 800;
+}
+
+.adminOptionPreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.adminOptionPreview span {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: #fff2e9;
+  color: #FF6A00;
+  font-size: .82rem;
+  font-weight: 900;
+}
+
+@media (max-width: 920px) {
+  .starProductSection {
+    grid-template-columns: 1fr;
+    width: calc(100% - 20px) !important;
+    padding: 16px;
+  }
+
+  .starProductMedia,
+  .starProductMedia img {
+    min-height: 280px;
+  }
+
+  .starProductMedia img {
+    padding: 26px;
+  }
+
+  .carouselTrack {
+    grid-auto-columns: minmax(190px, 78vw);
+  }
+}
+
+
+
+/* =========================================================
+   RELEVANCE CAROUSEL VISUAL FIX
+========================================================= */
+
+.relevanceCarousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 36px;
+  padding: 48px 26px 34px !important;
+  background:
+    radial-gradient(circle at top right, rgba(255,106,0,.16), transparent 18rem),
+    linear-gradient(135deg, #111117 0%, #1B1B22 100%) !important;
+  border: 1px solid rgba(255,255,255,.06);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.22),
+    0 0 0 1px rgba(255,255,255,.03) inset;
+}
+
+.relevanceCarousel .sectionTitle h2 {
+  color: #ffffff !important;
+  display: inline-flex;
+  padding: 14px 18px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.relevanceCarousel .sectionTitle span {
+  color: #FFB37A !important;
+}
+
+.carouselProduct {
+  border: 1px solid rgba(255,255,255,.08) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.97), rgba(247,244,239,.97)) !important;
+  transition: all .24s ease;
+}
+
+.carouselProduct:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 30px 70px rgba(0,0,0,.22),
+    0 0 40px rgba(255,106,0,.10);
+}
+
+@media (max-width: 900px) {
+  .relevanceCarousel {
+    width: calc(100% - 20px) !important;
+    padding: 34px 16px 24px !important;
+    border-radius: 24px;
+  }
+}
+
+
+
+/* =========================================================
+   VARIANT DISPLAY + AUTO CAROUSEL
+========================================================= */
+
+.variantPreview {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #fff7f1, #fff);
+  border: 1px solid rgba(255,106,0,.10);
+}
+
+.variantPreview strong {
+  color: #111;
+  font-size: .92rem;
+}
+
+.variantPreview span {
+  color: #FF6A00;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+.carouselTrack {
+  animation: carouselFloat 28s linear infinite;
+}
+
+.relevanceCarousel:hover .carouselTrack {
+  animation-play-state: paused;
+}
+
+@keyframes carouselFloat {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-18%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.carouselTrack::-webkit-scrollbar {
+  height: 10px;
+}
+
+.carouselTrack::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #FF6A00, #FF8C3A);
+  border-radius: 999px;
+}
+
+@media (max-width: 900px) {
+  .carouselTrack {
+    animation-duration: 18s;
+  }
+
+  @keyframes carouselFloat {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(-45%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+}

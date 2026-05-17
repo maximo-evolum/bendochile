@@ -9,9 +9,7 @@ Contraseña temporal para todos: admin123
 SOLO EN LOS EQUIPOS NUEVOS
 node server.js
 
-
 LIMPIAR DEPENDENCIAS SI HAY ERRORES
-
 Remove-Item -Recurse -Force node_modules
 Remove-Item package-lock.json
 

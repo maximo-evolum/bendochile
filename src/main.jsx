@@ -43,6 +43,10 @@ const emptyForm = {
   discount_active: false,
   discount_price: '',
   featured: false,
+  starProduct: false,
+  carouselProduct: false,
+  options: [],
+  optionsText: '',
 };
 
 function money(value) {
@@ -224,6 +228,13 @@ function App() {
       discount_active: Number(form.discountPercent || 0) > 0,
       specifications: form.specs || '',
       short_description: form.specs || '',
+      options: normalizeProductOptions(form.options),
+      product_options: normalizeProductOptions(form.options),
+      variants: normalizeProductOptions(form.options),
+      starProduct: Boolean(form.starProduct),
+      star_product: Boolean(form.starProduct),
+      carouselProduct: Boolean(form.carouselProduct),
+      carousel_product: Boolean(form.carouselProduct),
       discount_price: Number(form.discountPercent || 0) > 0
         ? Math.round(Number(form.price || 0) - (Number(form.price || 0) * Number(form.discountPercent || 0) / 100))
         : 0,
@@ -246,6 +257,12 @@ function App() {
       stock: String(product.stock || ''),
       discountPercent: String(getDiscountPercent(product) || ''),
       gallery: normalizeGallery(product.gallery),
+      options: normalizeProductOptions(product.options || product.variants || product.product_options),
+      starProduct: productIsStar(product),
+      carouselProduct: Boolean(product.carouselProduct || product.carousel_product),
+      optionsText: normalizeProductOptions(product.options || product.variants || product.product_options)
+        .map((option) => `${option.label}: ${option.values.join(', ')}`)
+        .join('\n'),
     });
 
     setImageFile(null);
@@ -431,6 +448,33 @@ function LoginPage({ onLogin, message }) {
 }
 
 
+
+function normalizeProductOptions(options) {
+  if (Array.isArray(options)) return options.filter((item) => item && item.label && item.values?.length)
+
+  if (!options) return []
+
+  try {
+    const parsed = JSON.parse(options)
+    return Array.isArray(parsed) ? parsed.filter((item) => item && item.label && item.values?.length) : []
+  } catch {
+    return []
+  }
+}
+
+function productOptionSummary(product) {
+  const options = normalizeProductOptions(product?.options || product?.variants || product?.product_options)
+  return options.map((option) => `${option.label}: ${option.values.join(', ')}`).join(' • ')
+}
+
+function productIsStar(product) {
+  return Boolean(product?.starProduct || product?.star_product || product?.is_star)
+}
+
+function productInCarousel(product) {
+  return Boolean(product?.carouselProduct || product?.carousel_product || product?.featured || getDiscountPercent(product) > 0)
+}
+
 function productBadges(product) {
   const badges = []
 
@@ -457,6 +501,8 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
   const bestSellers = pickProducts(allProducts, (product) => product.featured || Number(product.stock || 0) <= 8, 4);
   const offers = pickProducts(allProducts, (product) => getDiscountPercent(product) > 0, 4);
   const viral = pickProducts(allProducts, (product) => product.featured, 4);
+  const starProduct = allProducts.find(productIsStar) || featured[0] || allProducts[0];
+  const carouselProducts = pickProducts(allProducts, productInCarousel, 8);
 
   const submitNewsletter = (event) => {
     event.preventDefault();
@@ -523,6 +569,59 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
           )}
         </div>
       </section>
+
+
+      {starProduct && (
+        <section className="starProductSection section">
+          <div className="starProductMedia">
+            <span>Producto estrella</span>
+            <img src={resolveProductImage(starProduct.image)} alt={starProduct.name} />
+          </div>
+
+          <div className="starProductInfo">
+            <p className="eyebrow dark">Oportunidad destacada</p>
+            <h2>{starProduct.name}</h2>
+            <p>{starProduct.description}</p>
+
+            <div className="starBenefits">
+              <span>Stock disponible: {starProduct.stock}</span>
+              {getDiscountPercent(starProduct) > 0 && <span>-{getDiscountPercent(starProduct)}% descuento</span>}
+              {productOptionSummary(starProduct) && <span>{productOptionSummary(starProduct)}</span>}
+            </div>
+
+            <div className="starPrice">
+              <strong>{money(finalPrice(starProduct))}</strong>
+              {getDiscountPercent(starProduct) > 0 && <small>{money(starProduct.price)}</small>}
+            </div>
+
+            <button className="cta" onClick={() => onProduct(starProduct)}>
+              Ver producto <ChevronRight size={18} />
+            </button>
+          </div>
+        </section>
+      )}
+
+      {carouselProducts.length > 0 && (
+        <section className="relevanceCarousel section">
+          <div className="sectionTitle">
+            <h2>Productos con más relevancia</h2>
+            <span>Destacados • Ofertas • Virales</span>
+          </div>
+
+          <div className="carouselTrack">
+            {carouselProducts.map((product) => (
+              <button className="carouselProduct" key={product.id} onClick={() => onProduct(product)}>
+                <img src={resolveProductImage(product.image)} alt={product.name} />
+                <div>
+                  <strong>{product.name}</strong>
+                  <span>{money(finalPrice(product))}</span>
+                  {getDiscountPercent(product) > 0 && <em>-{getDiscountPercent(product)}%</em>}
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section id="experiencia" className="experience section trustSection">
         <div className="sectionTitle compact">
@@ -667,6 +766,7 @@ function ProductCard({ product, onProduct, addToCart }) {
         <h3>{product.name}</h3>
         <p>{product.description}</p>
         <small>{productSpecs(product) || 'Sin especificaciones agregadas'}</small>
+        {productOptionSummary(product) && <small className="optionHint">Opciones: {productOptionSummary(product)}</small>}
 
         <div className="buyRow">
           <div className="priceBlock">
@@ -694,6 +794,18 @@ function ProductModal({ product, onClose, addToCart }) {
   const discountPercent = getDiscountPercent(product);
   const images = productGallery(product);
   const specs = productSpecs(product);
+  const options = normalizeProductOptions(
+    product.options ||
+    product.variants ||
+    product.product_options ||
+    []
+  );
+  const [selectedOptions, setSelectedOptions] = useState(() => {
+    return options.reduce((acc, option) => {
+      acc[option.label] = option.values[0] || '';
+      return acc;
+    }, {});
+  });
 
   const [activeImage, setActiveImage] = useState(
     images[0] || product.image
@@ -725,6 +837,13 @@ function ProductModal({ product, onClose, addToCart }) {
     setActiveImage(images[prevIndex]);
   };
 
+  const addSelectedToCart = () => {
+    addToCart({
+      ...product,
+      selectedOptions
+    });
+  };
+
   return (
     <div className="modalBackdrop" onClick={onClose}>
       <section className="productModal" onClick={(event) => event.stopPropagation()}>
@@ -736,27 +855,12 @@ function ProductModal({ product, onClose, addToCart }) {
           <div className="mainImageWrapper">
             {images.length > 1 && (
               <>
-                <button
-                  className="galleryArrow left"
-                  onClick={goPrev}
-                >
-                  ‹
-                </button>
-
-                <button
-                  className="galleryArrow right"
-                  onClick={goNext}
-                >
-                  ›
-                </button>
+                <button className="galleryArrow left" onClick={goPrev}>‹</button>
+                <button className="galleryArrow right" onClick={goNext}>›</button>
               </>
             )}
 
-            <img
-              className="modalMainImage"
-              src={resolveProductImage(activeImage)}
-              alt={product.name}
-            />
+            <img className="modalMainImage" src={resolveProductImage(activeImage)} alt={product.name} />
           </div>
 
           {images.length > 1 && (
@@ -764,15 +868,10 @@ function ProductModal({ product, onClose, addToCart }) {
               {images.map((image, index) => (
                 <button
                   key={`${image}-${index}`}
-                  className={`thumbButton ${
-                    activeImage === image ? 'active' : ''
-                  }`}
+                  className={`thumbButton ${activeImage === image ? 'active' : ''}`}
                   onClick={() => setActiveImage(image)}
                 >
-                  <img
-                    src={resolveProductImage(image)}
-                    alt={`${product.name} imagen ${index + 1}`}
-                  />
+                  <img src={resolveProductImage(image)} alt={`${product.name} imagen ${index + 1}`} />
                 </button>
               ))}
             </div>
@@ -781,21 +880,43 @@ function ProductModal({ product, onClose, addToCart }) {
 
         <div className="productDetail">
           <span className="tag">{product.category}</span>
-
           <h2>{product.name}</h2>
-
           <p>{product.description}</p>
 
           <div className={`stock large ${status.className}`}>
             {status.label}: {product.stock} unidades
           </div>
 
+          {options.length > 0 && (
+            <div className="variantBox">
+              <strong>Selecciona una opción</strong>
+              {options.map((option) => (
+                <label key={option.label}>
+                  {option.label}
+                  <select
+                    value={selectedOptions[option.label] || ''}
+                    onChange={(event) => setSelectedOptions({
+                      ...selectedOptions,
+                      [option.label]: event.target.value
+                    })}
+                  >
+                    {option.values.map((value) => <option key={value}>{value}</option>)}
+                  </select>
+                </label>
+              ))}
+            </div>
+          )}
+
+          {productOptionSummary(product) && (
+            <div className="variantPreview">
+              <strong>Opciones disponibles</strong>
+              <span>{productOptionSummary(product)}</span>
+            </div>
+          )}
+
           <div className="specBox">
             <strong>Especificaciones</strong>
-
-            <span>
-              {specs || 'Sin especificaciones agregadas'}
-            </span>
+            <span>{specs || 'Sin especificaciones agregadas'}</span>
           </div>
 
           <div className="modalBuy">
@@ -804,23 +925,14 @@ function ProductModal({ product, onClose, addToCart }) {
 
               {discountPercent > 0 && (
                 <div className="discountInfo">
-                  <small className="oldPrice">
-                    {money(product.price)}
-                  </small>
-
-                  <span className="discountBadge">
-                    -{discountPercent}%
-                  </span>
+                  <small className="oldPrice">{money(product.price)}</small>
+                  <span className="discountBadge">-{discountPercent}%</span>
                 </div>
               )}
             </div>
 
-            <button
-              disabled={product.stock <= 0}
-              onClick={() => addToCart(product)}
-            >
-              <ShoppingCart size={18} />
-              Agregar al carrito
+            <button disabled={product.stock <= 0} onClick={addSelectedToCart}>
+              <ShoppingCart size={18} /> Agregar al carrito
             </button>
           </div>
         </div>
@@ -836,7 +948,7 @@ function CartDrawer({ cart, open, onClose, changeQty, removeFromCart }) {
 ${cart
       .map(
         (item) =>
-          `- ${item.name} x${item.qty}: ${money(
+          `- ${item.name}${item.selectedOptions ? ` (${Object.entries(item.selectedOptions).map(([key, value]) => `${key}: ${value}`).join(', ')})` : ''} x${item.qty}: ${money(
             finalPrice(item) * item.qty
           )}`
       )
@@ -861,6 +973,7 @@ Total estimado: ${money(total)}`
               <div>
                 <strong>{item.name}</strong>
                 <small>{money(finalPrice(item))}</small>
+                {item.selectedOptions && <small className="cartOptions">{Object.entries(item.selectedOptions).map(([key, value]) => `${key}: ${value}`).join(' • ')}</small>}
 
                 {discountPercent > 0 && (
                   <div className="discountInfo mini">
@@ -917,6 +1030,7 @@ function Admin({ form, setForm, saveProduct, products, deleteProduct, updateStoc
           <h2><LayoutDashboard size={22} /> {form.id ? 'Editar producto' : 'Nuevo producto'}</h2>
           <label>Nombre<input placeholder="Ej: Cemento rápido" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} /></label>
           <div className="two"><label>Categoría<select value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })}>{categories.filter((item) => item !== 'Todos').map((item) => <option key={item}>{item}</option>)}</select></label><label>Destacado<select value={form.featured ? 'Sí' : 'No'} onChange={(event) => setForm({ ...form, featured: event.target.value === 'Sí' })}><option>Sí</option><option>No</option></select></label></div>
+          <div className="two"><label>Producto estrella<select value={form.starProduct ? 'Sí' : 'No'} onChange={(event) => setForm({ ...form, starProduct: event.target.value === 'Sí' })}><option>Sí</option><option>No</option></select></label><label>Mostrar en carrusel<select value={form.carouselProduct ? 'Sí' : 'No'} onChange={(event) => setForm({ ...form, carouselProduct: event.target.value === 'Sí' })}><option>Sí</option><option>No</option></select></label></div>
           <label>Descripción<textarea placeholder="Describe el producto" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} /></label>
           <label>Especificaciones<textarea placeholder="Medidas, formato, material, uso recomendado" value={form.specs} onChange={(event) => setForm({ ...form, specs: event.target.value })} /></label>
           <div className="two"><label>Precio<input type="number" placeholder="29990" value={form.price} onChange={(event) => setForm({ ...form, price: event.target.value })} /></label><label>Stock<input type="number" placeholder="15" value={form.stock} onChange={(event) => setForm({ ...form, stock: event.target.value })} /></label></div>
@@ -955,6 +1069,37 @@ function Admin({ form, setForm, saveProduct, products, deleteProduct, updateStoc
               ))}
             </div>
           )}
+
+          <label>
+            Menú desplegable del producto
+            <textarea
+              placeholder={'Ejemplo:\nTalla: S, M, L, XL\nColor: Negro, Blanco\nCapacidad: 128GB, 256GB'}
+              value={form.optionsText || ''}
+              onChange={(event) => setForm({
+                ...form,
+                optionsText: event.target.value
+              })}
+            />
+          </label>
+
+          {(form.optionsText || '').trim() && (
+            <div className="adminOptionPreview">
+              {normalizeProductOptions(
+                (form.optionsText || '')
+                  .split('\n')
+                  .map((line) => {
+                    const [label, values] = line.split(':');
+                    return {
+                      label: (label || '').trim(),
+                      values: (values || '').split(',').map((item) => item.trim()).filter(Boolean)
+                    };
+                  })
+              ).map((option) => (
+                <span key={option.label}>{option.label}: {option.values.join(', ')}</span>
+              ))}
+            </div>
+          )}
+
           <div className="formActions"><button className="primary">{form.id ? 'Guardar cambios' : 'Publicar producto'}</button>{form.id && <button type="button" className="ghostText" onClick={() => { setForm(emptyForm); setImageFile(null); }}>Cancelar</button>}</div>
         </form>
 

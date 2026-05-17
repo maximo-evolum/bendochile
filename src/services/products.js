@@ -18,6 +18,19 @@ async function safeJson(response) {
   return data
 }
 
+function normalizeProductOptions(options) {
+  if (Array.isArray(options)) return options.filter((item) => item && item.label && item.values?.length)
+
+  if (!options) return []
+
+  try {
+    const parsed = JSON.parse(options)
+    return Array.isArray(parsed) ? parsed.filter((item) => item && item.label && item.values?.length) : []
+  } catch {
+    return []
+  }
+}
+
 export function isSupabaseConfigured() {
   return false
 }
@@ -100,7 +113,10 @@ export async function getProducts() {
     ? products.map(normalizeProductDiscountFields).map((product) => ({
         ...product,
         specs: product.specs || product.specifications || product.short_description || '',
-        gallery: normalizeGallery(product.gallery || product.images || product.photos)
+        gallery: normalizeGallery(product.gallery || product.images || product.photos),
+        options: normalizeProductOptions(product.options || product.variants || product.product_options),
+        starProduct: Boolean(product.starProduct || product.star_product || product.is_star),
+        carouselProduct: Boolean(product.carouselProduct || product.carousel_product)
       }))
     : []
 }
@@ -146,6 +162,12 @@ export async function saveProduct(product = {}) {
   product.discountPercent = discountPercent
   product.discount_percent = discountPercent
   product.discount_active = discountPercent > 0
+  product.options = normalizeProductOptions(product.options || product.variants || product.product_options)
+  product.variants = product.options
+  product.product_options = product.options
+  product.star_product = Boolean(product.starProduct || product.star_product)
+  product.carousel_product = Boolean(product.carouselProduct || product.carousel_product)
+
   product.discount_price = discountPercent > 0
     ? Math.round(price - (price * discountPercent / 100))
     : 0
