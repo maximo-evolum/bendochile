@@ -228,9 +228,9 @@ function App() {
       discount_active: Number(form.discountPercent || 0) > 0,
       specifications: form.specs || '',
       short_description: form.specs || '',
-      options: normalizeProductOptions(form.options),
-      product_options: normalizeProductOptions(form.options),
-      variants: normalizeProductOptions(form.options),
+      options: parseOptionsText(form.optionsText),
+      product_options: parseOptionsText(form.optionsText),
+      variants: parseOptionsText(form.optionsText),
       starProduct: Boolean(form.starProduct),
       star_product: Boolean(form.starProduct),
       carouselProduct: Boolean(form.carouselProduct),
@@ -449,47 +449,104 @@ function LoginPage({ onLogin, message }) {
 
 
 
+
 function normalizeProductOptions(options) {
-  if (Array.isArray(options)) return options.filter((item) => item && item.label && item.values?.length)
+  if (Array.isArray(options)) {
+    return options
+      .map((option) => ({
+        label: String(option?.label || '').trim(),
+        values: Array.isArray(option?.values)
+          ? option.values.map((item) => String(item).trim()).filter(Boolean)
+          : []
+      }))
+      .filter((option) => option.label && option.values.length)
+  }
 
   if (!options) return []
 
   try {
     const parsed = JSON.parse(options)
-    return Array.isArray(parsed) ? parsed.filter((item) => item && item.label && item.values?.length) : []
+    return normalizeProductOptions(parsed)
   } catch {
     return []
   }
 }
 
+function parseOptionsText(text = '') {
+  return String(text || '')
+    .split('\n')
+    .map((line) => {
+      const [label, values] = line.split(':')
+      return {
+        label: String(label || '').trim(),
+        values: String(values || '')
+          .split(',')
+          .map((item) => item.trim())
+          .filter(Boolean)
+      }
+    })
+    .filter((option) => option.label && option.values.length)
+}
+
+function optionsToText(options) {
+  return normalizeProductOptions(options)
+    .map((option) => `${option.label}: ${option.values.join(', ')}`)
+    .join('\n')
+}
+
 function productOptionSummary(product) {
-  const options = normalizeProductOptions(
-    product?.options ||
-    product?.variants ||
-    product?.product_options ||
-    []
-  );
-  const [newsletterStatus, setNewsletterStatus] = useState('');
-  const featured = pickProducts(allProducts, (product) => product.featured || getDiscountPercent(product) > 0, 3);
-  const bestSellers = pickProducts(allProducts, (product) => product.featured || Number(product.stock || 0) <= 8, 4);
-  const offers = pickProducts(allProducts, (product) => getDiscountPercent(product) > 0, 4);
-  const viral = pickProducts(allProducts, (product) => product.featured, 4);
-  const starProduct = allProducts.find(productIsStar) || featured[0] || allProducts[0];
-  const carouselProducts = pickProducts(allProducts, productInCarousel, 8);
+  const options = normalizeProductOptions(product?.options || product?.variants || product?.product_options)
+  return options.map((option) => `${option.label}: ${option.values.join(', ')}`).join(' • ')
+}
+
+function productIsStar(product) {
+  return Boolean(product?.starProduct || product?.star_product || product?.is_star)
+}
+
+function productInCarousel(product) {
+  return Boolean(product?.carouselProduct || product?.carousel_product || product?.featured || getDiscountPercent(product) > 0)
+}
+
+function productBadges(product) {
+  const badges = []
+
+  if (getDiscountPercent(product) > 0) badges.push('Oferta')
+  if (product.featured) badges.push('Viral')
+  if (Number(product.stock || 0) > 0 && Number(product.stock || 0) <= 5) badges.push('Últimas unidades')
+  if (Number(product.stock || 0) > 5) badges.push('Stock limitado')
+
+  return badges.slice(0, 2)
+}
+
+function pickProducts(products, predicate, limit = 4) {
+  const list = Array.isArray(products) ? products : []
+  const selected = list.filter(predicate)
+  return (selected.length > 0 ? selected : list).slice(0, limit)
+}
+
+function Store({ products, allProducts, query, setQuery, category, setCategory, onProduct, addToCart }) {
+  const [email, setEmail] = useState('')
+  const [newsletterStatus, setNewsletterStatus] = useState('')
+  const featured = pickProducts(allProducts, (product) => product.featured || getDiscountPercent(product) > 0, 3)
+  const bestSellers = pickProducts(allProducts, (product) => product.featured || Number(product.stock || 0) <= 8, 4)
+  const offers = pickProducts(allProducts, (product) => getDiscountPercent(product) > 0, 4)
+  const viral = pickProducts(allProducts, (product) => product.featured, 4)
+  const starProduct = allProducts.find(productIsStar) || featured[0] || allProducts[0]
+  const carouselProducts = pickProducts(allProducts, productInCarousel, 8)
 
   const submitNewsletter = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     if (!email || !email.includes('@')) {
-      setNewsletterStatus('Ingresa un correo válido para recibir novedades.');
-      return;
+      setNewsletterStatus('Ingresa un correo válido para recibir novedades.')
+      return
     }
 
-    const saved = JSON.parse(localStorage.getItem('bendo_newsletter') || '[]');
-    localStorage.setItem('bendo_newsletter', JSON.stringify([...new Set([...saved, email])]));
-    setEmail('');
-    setNewsletterStatus('Listo. Te avisaremos cuando lleguen nuevas ofertas virales.');
-  };
+    const saved = JSON.parse(localStorage.getItem('bendo_newsletter') || '[]')
+    localStorage.setItem('bendo_newsletter', JSON.stringify([...new Set([...saved, email])]))
+    setEmail('')
+    setNewsletterStatus('Listo. Te avisaremos cuando lleguen nuevas ofertas virales.')
+  }
 
   return (
     <>
@@ -531,9 +588,7 @@ function productOptionSummary(product) {
                 <strong>{product.name}</strong>
                 <small>{money(finalPrice(product))}</small>
               </div>
-              {getDiscountPercent(product) > 0 && (
-                <span>-{getDiscountPercent(product)}%</span>
-              )}
+              {getDiscountPercent(product) > 0 && <span>-{getDiscountPercent(product)}%</span>}
             </button>
           ))}
 
@@ -542,7 +597,6 @@ function productOptionSummary(product) {
           )}
         </div>
       </section>
-
 
       {starProduct && (
         <section className="starProductSection section">
@@ -685,7 +739,7 @@ function productOptionSummary(product) {
         </div>
       </footer>
     </>
-  );
+  )
 }
 
 function Feature({ icon, title, text }) {
@@ -1079,17 +1133,7 @@ function Admin({ form, setForm, saveProduct, products, deleteProduct, updateStoc
 
           {(form.optionsText || '').trim() && (
             <div className="adminOptionPreview">
-              {normalizeProductOptions(
-                (form.optionsText || '')
-                  .split('\n')
-                  .map((line) => {
-                    const [label, values] = line.split(':');
-                    return {
-                      label: (label || '').trim(),
-                      values: (values || '').split(',').map((item) => item.trim()).filter(Boolean)
-                    };
-                  })
-              ).map((option) => (
+              {parseOptionsText(form.optionsText).map((option) => (
                 <span key={option.label}>{option.label}: {option.values.join(', ')}</span>
               ))}
             </div>
