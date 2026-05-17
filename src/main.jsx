@@ -463,39 +463,12 @@ function normalizeProductOptions(options) {
 }
 
 function productOptionSummary(product) {
-  const options = normalizeProductOptions(product?.options || product?.variants || product?.product_options)
-  return options.map((option) => `${option.label}: ${option.values.join(', ')}`).join(' • ')
-}
-
-function productIsStar(product) {
-  return Boolean(product?.starProduct || product?.star_product || product?.is_star)
-}
-
-function productInCarousel(product) {
-  return Boolean(product?.carouselProduct || product?.carousel_product || product?.featured || getDiscountPercent(product) > 0)
-}
-
-function productBadges(product) {
-  const badges = []
-
-  if (getDiscountPercent(product) > 0) badges.push('Oferta')
-  if (product.featured) badges.push('Viral')
-  if (Number(product.stock || 0) > 0 && Number(product.stock || 0) <= 5) badges.push('Últimas unidades')
-  if (Number(product.stock || 0) > 5) badges.push('Stock limitado')
-
-  return badges.slice(0, 2)
-}
-
-function pickProducts(products, predicate, limit = 4) {
-  const selected = products.filter(predicate)
-
-  return selected.length > 0
-    ? selected.slice(0, limit)
-    : products.slice(0, limit)
-}
-
-function Store({ products, allProducts, query, setQuery, category, setCategory, onProduct, addToCart }) {
-  const [email, setEmail] = useState('');
+  const options = normalizeProductOptions(
+    product?.options ||
+    product?.variants ||
+    product?.product_options ||
+    []
+  );
   const [newsletterStatus, setNewsletterStatus] = useState('');
   const featured = pickProducts(allProducts, (product) => product.featured || getDiscountPercent(product) > 0, 3);
   const bestSellers = pickProducts(allProducts, (product) => product.featured || Number(product.stock || 0) <= 8, 4);
