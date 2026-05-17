@@ -861,29 +861,30 @@ function ProductModal({ product, onClose, addToCart }) {
           </div>
 
           {options.length > 0 && (
-            <div className="variantBox">
-              <strong>Selecciona una opción</strong>
-              {options.map((option) => (
-                <label key={option.label}>
-                  {option.label}
-                  <select
-                    value={selectedOptions[option.label] || ''}
-                    onChange={(event) => setSelectedOptions({
-                      ...selectedOptions,
-                      [option.label]: event.target.value
-                    })}
-                  >
-                    {option.values.map((value) => <option key={value}>{value}</option>)}
-                  </select>
-                </label>
-              ))}
-            </div>
-          )}
-
-          {productOptionSummary(product) && (
             <div className="variantPreview">
               <strong>Opciones disponibles</strong>
-              <span>{productOptionSummary(product)}</span>
+
+              {options.map((option) => (
+                <div className="variantGroup" key={option.label}>
+                  <label>{option.label}</label>
+
+                  <select
+                    value={selectedOptions[option.label] || ''}
+                    onChange={(event) =>
+                      setSelectedOptions({
+                        ...selectedOptions,
+                        [option.label]: event.target.value
+                      })
+                    }
+                  >
+                    {option.values.map((value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
             </div>
           )}
 
