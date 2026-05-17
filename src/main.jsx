@@ -762,20 +762,23 @@ function ProductCard({ product, onProduct, addToCart }) {
   );
 }
 
+
 function ProductModal({ product, onClose, addToCart }) {
   const status = stockInfo(product.stock);
   const discountPercent = getDiscountPercent(product);
   const images = productGallery(product);
   const specs = productSpecs(product);
+
   const options = normalizeProductOptions(
-    product.options ||
-    product.variants ||
-    product.product_options ||
+    product?.options ||
+    product?.variants ||
+    product?.product_options ||
     []
   );
+
   const [selectedOptions, setSelectedOptions] = useState(() => {
     return options.reduce((acc, option) => {
-      acc[option.label] = option.values[0] || '';
+      acc[option.label] = option.values?.[0] || '';
       return acc;
     }, {});
   });
@@ -833,7 +836,11 @@ function ProductModal({ product, onClose, addToCart }) {
               </>
             )}
 
-            <img className="modalMainImage" src={resolveProductImage(activeImage)} alt={product.name} />
+            <img
+              className="modalMainImage"
+              src={resolveProductImage(activeImage)}
+              alt={product.name}
+            />
           </div>
 
           {images.length > 1 && (
@@ -844,7 +851,10 @@ function ProductModal({ product, onClose, addToCart }) {
                   className={`thumbButton ${activeImage === image ? 'active' : ''}`}
                   onClick={() => setActiveImage(image)}
                 >
-                  <img src={resolveProductImage(image)} alt={`${product.name} imagen ${index + 1}`} />
+                  <img
+                    src={resolveProductImage(image)}
+                    alt={`${product.name} imagen ${index + 1}`}
+                  />
                 </button>
               ))}
             </div>
@@ -853,7 +863,9 @@ function ProductModal({ product, onClose, addToCart }) {
 
         <div className="productDetail">
           <span className="tag">{product.category}</span>
+
           <h2>{product.name}</h2>
+
           <p>{product.description}</p>
 
           <div className={`stock large ${status.className}`}>
@@ -899,14 +911,23 @@ function ProductModal({ product, onClose, addToCart }) {
 
               {discountPercent > 0 && (
                 <div className="discountInfo">
-                  <small className="oldPrice">{money(product.price)}</small>
-                  <span className="discountBadge">-{discountPercent}%</span>
+                  <small className="oldPrice">
+                    {money(product.price)}
+                  </small>
+
+                  <span className="discountBadge">
+                    -{discountPercent}%
+                  </span>
                 </div>
               )}
             </div>
 
-            <button disabled={product.stock <= 0} onClick={addSelectedToCart}>
-              <ShoppingCart size={18} /> Agregar al carrito
+            <button
+              disabled={product.stock <= 0}
+              onClick={addSelectedToCart}
+            >
+              <ShoppingCart size={18} />
+              Agregar al carrito
             </button>
           </div>
         </div>
