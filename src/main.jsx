@@ -90,6 +90,24 @@ function productSpecs(product) {
   )
 }
 
+
+function getVariantImage(product, label, value) {
+  const images = productGallery(product)
+
+  if (!value) {
+    return images[0] || product.image
+  }
+
+  const normalized = value.toLowerCase()
+
+  const matched =
+    images.find((image) =>
+      String(image).toLowerCase().includes(normalized)
+    ) || product.image
+
+  return matched
+}
+
 function productGallery(product) {
   const mainImage = product?.image ? [product.image] : []
   const gallery = normalizeGallery(product?.gallery || product?.images || product?.photos)
@@ -936,12 +954,24 @@ function ProductModal({ product, onClose, addToCart }) {
 
                   <select
                     value={selectedOptions[option.label] || ''}
-                    onChange={(event) =>
+                    onChange={(event) => {
+                      const selectedValue = event.target.value
+
                       setSelectedOptions({
                         ...selectedOptions,
-                        [option.label]: event.target.value
+                        [option.label]: selectedValue
                       })
-                    }
+
+                      const variantImage = getVariantImage(
+                        product,
+                        option.label,
+                        selectedValue
+                      )
+
+                      if (variantImage) {
+                        setActiveImage(variantImage)
+                      }
+                    }}
                   >
                     {option.values.map((value) => (
                       <option key={value} value={value}>

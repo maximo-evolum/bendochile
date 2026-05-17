@@ -2558,3 +2558,47 @@ textarea {
     height: 200px !important;
   }
 }
+
+
+
+/* =========================================================
+   SAFE CAROUSEL FIX
+   Corrige recorte sin alterar estética BENDO
+========================================================= */
+
+.carouselTrack{
+  align-items: stretch;
+}
+
+.carouselProduct{
+  overflow: hidden;
+}
+
+.carouselProduct img{
+  width: 100%;
+  max-width: 100%;
+  height: 200px;
+  object-fit: contain !important;
+  object-position: center;
+  display: block;
+}
+
+/* Productos verticales o grandes */
+.carouselProduct img[src*="aceite"],
+.carouselProduct img[src*="5l"],
+.carouselProduct img[src*="bidon"]{
+  height: 225px;
+}
+
+@media (max-width: 900px){
+
+  .carouselProduct img{
+    height: 180px;
+  }
+
+  .carouselProduct img[src*="aceite"],
+  .carouselProduct img[src*="5l"],
+  .carouselProduct img[src*="bidon"]{
+    height: 205px;
+  }
+}
