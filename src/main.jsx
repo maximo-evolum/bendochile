@@ -299,8 +299,26 @@ function App() {
   const addToCart = (product) => {
     if (product.stock <= 0) return;
     setCart((current) => {
-      const existing = current.find((item) => item.id === product.id);
-      if (existing) return current.map((item) => (item.id === product.id ? { ...item, qty: Math.min(item.qty + 1, product.stock) } : item));
+      const variantKey = JSON.stringify(product.selectedOptions || {});
+
+      const existing = current.find(
+        (item) =>
+          item.id === product.id &&
+          JSON.stringify(item.selectedOptions || {}) === variantKey
+      );
+
+      if (existing) {
+        return current.map((item) =>
+          item.id === product.id &&
+          JSON.stringify(item.selectedOptions || {}) === variantKey
+            ? {
+                ...item,
+                qty: Math.min(item.qty + 1, product.stock)
+              }
+            : item
+        );
+      }
+
       return [...current, { ...product, qty: 1 }];
     });
     setCartOpen(true);
@@ -1050,7 +1068,15 @@ Total estimado: ${money(total)}`
               <img src={resolveProductImage(item.image)} alt={item.name} />
 
               <div>
-                <strong>{item.name}</strong>
+                <strong>
+                  {item.name}
+                  {item.selectedOptions &&
+                    Object.values(item.selectedOptions).length > 0 && (
+                      <small className="cartVariantName">
+                        {' '}• {Object.values(item.selectedOptions).join(' • ')}
+                      </small>
+                    )}
+                </strong>
                 <small>{money(finalPrice(item))}</small>
                 {item.selectedOptions && <small className="cartOptions">{Object.entries(item.selectedOptions).map(([key, value]) => `${key}: ${value}`).join(' • ')}</small>}
 
