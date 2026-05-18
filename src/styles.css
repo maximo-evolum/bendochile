@@ -2629,3 +2629,196 @@ body{
     font-size:1.35rem;
   }
 }
+
+
+/* =========================================================
+   BENDO OPTION 4 — MARKETPLACE PREMIUM AESTHETIC
+   Paleta: negro, blanco, naranjo, blanco mate, gris.
+   Solo capa visual: no toca lógica, admin, carrito, variantes.
+========================================================= */
+:root{
+  --bendo-black:#050506;
+  --bendo-ink:#0b0b0d;
+  --bendo-card:#111115;
+  --bendo-card-2:#18181d;
+  --bendo-orange:#ff6a00;
+  --bendo-orange-2:#ff8a2a;
+  --bendo-white:#ffffff;
+  --bendo-matte:#f5f2ed;
+  --bendo-gray:#a9a9b2;
+}
+
+body{
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,106,0,.13), transparent 34rem),
+    radial-gradient(circle at 92% 8%, rgba(255,106,0,.08), transparent 28rem),
+    linear-gradient(180deg,var(--bendo-black) 0%,#09090b 52%,#f6f2ed 52%,#f6f2ed 100%) !important;
+  color:var(--bendo-white);
+}
+
+.header{
+  height:78px !important;
+  background:rgba(5,5,6,.86) !important;
+  border-bottom:1px solid rgba(255,255,255,.08) !important;
+  box-shadow:0 20px 50px rgba(0,0,0,.22) !important;
+}
+.bendoTextLogo{color:#fff !important;text-shadow:0 10px 30px rgba(0,0,0,.22)}
+.header nav button,.header nav a{color:rgba(255,255,255,.72) !important}
+.header nav .active,.header nav button:hover,.header nav a:hover{color:#fff !important;background:rgba(255,106,0,.13) !important}
+.cartButton,.menuButton,.logoutButton{background:#fff !important;color:#09090b !important}
+
+.topPromo{
+  background:#050506 !important;
+  border-bottom:1px solid rgba(255,106,0,.18) !important;
+  color:#fff !important;
+}
+.topPromo span:first-child{color:var(--bendo-orange)}
+
+.bendoHero.hero{
+  position:relative;
+  display:grid !important;
+  grid-template-columns:.78fr 1.22fr !important;
+  align-items:center;
+  gap:34px !important;
+  width:min(1280px,calc(100% - 40px));
+  min-height:620px !important;
+  margin:0 auto 34px !important;
+  padding:70px 0 44px !important;
+  background:transparent !important;
+  color:#fff !important;
+  overflow:visible !important;
+}
+.bendoHero::before{
+  content:'';
+  position:absolute;
+  inset:44px auto 36px -16px;
+  width:42%;
+  border-radius:34px;
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 28px 90px rgba(0,0,0,.28);
+  z-index:-1;
+}
+.heroGlow{display:none !important}
+.bendoHero .heroContent{max-width:460px !important;padding:24px 0 24px 8px}
+.bendoHero .eyebrow{color:var(--bendo-orange) !important;letter-spacing:.14em;font-size:.82rem}
+.bendoHero .heroContent h1{
+  max-width:480px !important;
+  font-size:clamp(3.2rem,6.2vw,5.9rem) !important;
+  line-height:.92 !important;
+  letter-spacing:-.075em !important;
+  text-transform:none !important;
+  color:#fff !important;
+}
+.bendoHero .heroContent h1::after{content:' BENDO.';color:var(--bendo-orange)}
+.bendoHero .heroContent p{color:#d8d8df !important;font-size:1rem !important;line-height:1.72 !important;max-width:380px !important}
+.heroActions{margin-top:26px !important}
+.cta,.primary{
+  background:linear-gradient(135deg,var(--bendo-orange),var(--bendo-orange-2)) !important;
+  color:#fff !important;
+  border:0 !important;
+  box-shadow:0 18px 46px rgba(255,106,0,.28) !important;
+}
+.secondaryCta{background:rgba(255,255,255,.04) !important;color:#fff !important;border:1px solid rgba(255,255,255,.14) !important}
+.trustStrip{display:flex !important;gap:10px !important;flex-wrap:wrap;margin-top:26px !important}
+.trustStrip span{background:rgba(255,255,255,.06) !important;border:1px solid rgba(255,255,255,.1) !important;color:#fff !important;font-size:.78rem !important}
+
+.viralHeroCard{
+  position:relative;
+  max-width:none !important;
+  width:100% !important;
+  min-height:390px;
+  display:grid !important;
+  grid-template-columns:1.1fr .9fr .9fr;
+  grid-auto-rows:1fr;
+  gap:18px !important;
+  padding:20px !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  overflow:visible !important;
+}
+.viralHeroCard .heroCardTop{
+  position:absolute;left:20px;top:-24px;color:var(--bendo-orange) !important;letter-spacing:.12em;text-transform:uppercase;font-weight:900;
+}
+.viralHeroCard .miniProduct{
+  position:relative;
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  align-content:end;
+  min-height:360px !important;
+  padding:18px !important;
+  border-radius:26px !important;
+  color:#fff !important;
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035)) !important;
+  border:1px solid rgba(255,106,0,.20) !important;
+  box-shadow:0 28px 70px rgba(0,0,0,.32) !important;
+  overflow:hidden;
+  transform:rotate(-2deg);
+}
+.viralHeroCard .miniProduct:nth-of-type(2){transform:translateY(34px) rotate(2deg)}
+.viralHeroCard .miniProduct:nth-of-type(3){transform:translateY(8px) rotate(-1deg)}
+.viralHeroCard .miniProduct:hover{transform:translateY(-10px) rotate(0deg) !important;border-color:rgba(255,106,0,.65) !important;box-shadow:0 34px 90px rgba(255,106,0,.10),0 30px 80px rgba(0,0,0,.38) !important}
+.viralHeroCard .miniProduct img{
+  position:absolute;inset:18px 14px 98px;width:calc(100% - 28px) !important;height:calc(100% - 120px) !important;object-fit:contain !important;background:transparent !important;padding:0 !important;border-radius:18px;
+}
+.viralHeroCard .miniProduct strong{font-size:1rem !important;color:#fff !important}
+.viralHeroCard .miniProduct small{color:var(--bendo-orange) !important;font-weight:900 !important}
+.viralHeroCard .miniProduct span{position:absolute;right:14px;top:14px;min-width:auto !important;background:var(--bendo-orange) !important;color:#fff !important;padding:7px 10px !important;border-radius:10px !important;font-size:.78rem !important}
+
+.experience.section{width:100% !important;max-width:none !important;margin:0 !important;padding:62px max(24px,calc((100vw - 1180px)/2)) !important;background:#050506 !important;border-radius:0 !important;color:#fff !important}
+.experience .sectionTitle h2{font-size:clamp(2.8rem,7vw,6.2rem) !important;line-height:.95 !important;color:#fff !important;max-width:900px}
+.experienceGrid .feature{background:#fff !important;color:#111 !important;border-radius:30px !important;box-shadow:0 28px 70px rgba(0,0,0,.18) !important}
+.experienceGrid .feature h3{color:#111 !important}.experienceGrid .feature p{color:#666675 !important}
+
+.starProductSection{
+  width:min(1180px,calc(100% - 40px)) !important;
+  margin:74px auto !important;
+  background:linear-gradient(135deg,#0b0b0d,#17171c) !important;
+  border:1px solid rgba(255,106,0,.16) !important;
+  box-shadow:0 35px 100px rgba(0,0,0,.28) !important;
+}
+.starProductMedia{background:radial-gradient(circle at center,rgba(255,106,0,.16),transparent 18rem),#0f0f12 !important}
+.starProductInfo h2{color:#fff !important}.starProductInfo p{color:#cfcfd6 !important}
+
+.relevanceCarousel{
+  background:linear-gradient(135deg,#0b0b0d,#18181e) !important;
+  border:1px solid rgba(255,106,0,.14) !important;
+}
+.relevanceCarousel .sectionTitle h2,.relevanceCarousel .sectionTitle span{color:#fff !important}
+
+.premiumHighlights{
+  background:linear-gradient(180deg,#f7f2ea,#fff) !important;
+  border:1px solid rgba(255,106,0,.12) !important;
+  box-shadow:0 34px 90px rgba(0,0,0,.08) !important;
+}
+.catalog.section{background:#fff !important;border-radius:40px 40px 0 0;padding-top:90px !important;color:#111 !important}
+.catalog .sectionTitle h2{color:#111 !important}
+.card{background:#fff !important;border:1px solid rgba(0,0,0,.06) !important;box-shadow:0 22px 58px rgba(0,0,0,.08) !important}
+.card:hover{transform:translateY(-7px);box-shadow:0 34px 80px rgba(0,0,0,.12) !important}
+.newsletter.section{background:linear-gradient(135deg,#0b0b0d,#261306) !important;border:1px solid rgba(255,106,0,.16) !important}
+footer{background:#050506 !important;color:#fff !important}
+
+@media(max-width:920px){
+  body{background:linear-gradient(180deg,#050506 0%,#050506 68%,#f6f2ed 68%,#f6f2ed 100%) !important}
+  .bendoHero.hero{grid-template-columns:1fr !important;width:calc(100% - 28px);padding-top:48px !important;min-height:auto !important;gap:40px !important}
+  .bendoHero::before{display:none}
+  .bendoHero .heroContent{max-width:100% !important;padding:0 !important}
+  .bendoHero .heroContent h1{font-size:clamp(3rem,14vw,4.6rem) !important}
+  .viralHeroCard{grid-template-columns:1fr !important;gap:14px !important;padding:18px !important;border:1px solid rgba(255,255,255,.09) !important;border-radius:28px;background:rgba(255,255,255,.045) !important}
+  .viralHeroCard .heroCardTop{position:static;grid-column:1;margin:0 0 8px}
+  .viralHeroCard .miniProduct{grid-template-columns:74px 1fr auto !important;min-height:104px !important;transform:none !important;align-items:center !important;align-content:center !important;border-radius:22px !important}
+  .viralHeroCard .miniProduct:nth-of-type(n){transform:none !important}
+  .viralHeroCard .miniProduct img{position:static;width:64px !important;height:64px !important;background:#fff !important;border-radius:16px;padding:4px !important}
+  .viralHeroCard .miniProduct span{position:static;justify-self:end}
+  .experience.section{padding:70px 22px !important}
+  .experience .sectionTitle h2{font-size:clamp(2.4rem,12vw,4rem) !important}
+}
+
+@media(max-width:620px){
+  .header{height:72px !important}.topPromo{font-size:.66rem !important;white-space:nowrap;overflow:hidden}
+  .heroActions{display:grid !important;grid-template-columns:1fr !important}.heroActions a{justify-content:center;width:100%}
+  .trustStrip{display:grid !important;grid-template-columns:1fr !important}
+  .experienceGrid .feature{padding:28px !important}
+  .catalog.section{border-radius:28px 28px 0 0;padding-left:14px !important;padding-right:14px !important}
+}

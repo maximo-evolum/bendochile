@@ -598,9 +598,9 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
         <div className="heroGlow" />
 
         <div className="heroContent">
-          <p className="eyebrow">BENDOCHILE.CL</p>
-          <h1>Todo lo que quieres. Más rápido. Más simple.</h1>
-          <p>Productos virales, tecnología, hogar y ofertas reales en un solo lugar. Compra fácil y cierra tu pedido directo por WhatsApp.</p>
+          <p className="eyebrow">LO MÁS VIRAL EN</p>
+          <h1>Productos que todos quieren.</h1>
+          <p>Envíos rápidos y atención real por WhatsApp.</p>
 
           <div className="heroActions">
             <a href="#ofertas" className="cta">Ver ofertas <ChevronRight size={18} /></a>
@@ -615,7 +615,7 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
         </div>
 
         <div className="heroCard viralHeroCard">
-          <div className="heroCardTop"><Sparkles size={18} /> Tendencias BENDO</div>
+          <div className="heroCardTop"><Sparkles size={18} /> Selección BENDO</div>
 
           {featured.map((product) => (
             <button className="miniProduct" key={product.id} onClick={() => onProduct(product)}>
@@ -649,7 +649,6 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
             <div className="starBenefits">
               <span>Stock disponible: {starProduct.stock}</span>
               {getDiscountPercent(starProduct) > 0 && <span>-{getDiscountPercent(starProduct)}% descuento</span>}
-              {productOptionSummary(starProduct) && <span>{productOptionSummary(starProduct)}</span>}
             </div>
 
             <div className="starPrice">
@@ -667,8 +666,8 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
       {carouselProducts.length > 0 && (
         <section className="relevanceCarousel section">
           <div className="sectionTitle">
-            <h2>Productos con más relevancia</h2>
-            <span>Destacados • Ofertas • Virales</span>
+            <h2>Virales en tendencia</h2>
+            <span>Productos elegidos para vender rápido</span>
           </div>
 
           <div className="netflixCarousel">
@@ -772,7 +771,7 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
         <div>
           <p className="eyebrow dark">Novedades y ofertas</p>
           <h2>Recibe productos virales antes que todos.</h2>
-          <p>Registra tu correo y recibe descuentos exclusivos en tus próximas compras.</p>
+          <p>Registra tu correo y recibe descuentos únicos para tus próximas compras.</p>
         </div>
 
         <form onSubmit={submitNewsletter}>
