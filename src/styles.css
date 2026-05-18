@@ -2349,240 +2349,6 @@ textarea {
 
 
 
-/* =========================================================
-   RELEVANCE CAROUSEL VISUAL FIX
-========================================================= */
-
-.relevanceCarousel {
-  position: relative;
-  overflow: hidden;
-  border-radius: 36px;
-  padding: 48px 26px 34px !important;
-  background:
-    radial-gradient(circle at top right, rgba(255,106,0,.16), transparent 18rem),
-    linear-gradient(135deg, #111117 0%, #1B1B22 100%) !important;
-  border: 1px solid rgba(255,255,255,.06);
-  box-shadow:
-    0 30px 90px rgba(0,0,0,.22),
-    0 0 0 1px rgba(255,255,255,.03) inset;
-}
-
-.relevanceCarousel .sectionTitle h2 {
-  color: #ffffff !important;
-  display: inline-flex;
-  padding: 14px 18px;
-  border-radius: 22px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.08);
-}
-
-.relevanceCarousel .sectionTitle span {
-  color: #FFB37A !important;
-}
-
-.carouselProduct {
-  border: 1px solid rgba(255,255,255,.08) !important;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.97), rgba(247,244,239,.97)) !important;
-  transition: all .24s ease;
-}
-
-.carouselProduct:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    0 30px 70px rgba(0,0,0,.22),
-    0 0 40px rgba(255,106,0,.10);
-}
-
-@media (max-width: 900px) {
-  .relevanceCarousel {
-    width: calc(100% - 20px) !important;
-    padding: 34px 16px 24px !important;
-    border-radius: 24px;
-  }
-}
-
-
-
-/* =========================================================
-   VARIANT DISPLAY + AUTO CAROUSEL
-========================================================= */
-
-.variantPreview {
-  display: grid;
-  gap: 8px;
-  padding: 18px;
-  border-radius: 22px;
-  background: linear-gradient(180deg, #fff7f1, #fff);
-  border: 1px solid rgba(255,106,0,.10);
-}
-
-.variantPreview strong {
-  color: #111;
-  font-size: .92rem;
-}
-
-.variantPreview span {
-  color: #FF6A00;
-  font-weight: 800;
-  line-height: 1.6;
-}
-
-.carouselTrack {
-  animation: carouselFloat 28s linear infinite;
-}
-
-.relevanceCarousel:hover .carouselTrack {
-  animation-play-state: paused;
-}
-
-@keyframes carouselFloat {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-18%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.carouselTrack::-webkit-scrollbar {
-  height: 10px;
-}
-
-.carouselTrack::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #FF6A00, #FF8C3A);
-  border-radius: 999px;
-}
-
-@media (max-width: 900px) {
-  .carouselTrack {
-    animation-duration: 18s;
-  }
-
-  @keyframes carouselFloat {
-    0% {
-      transform: translateX(0);
-    }
-    50% {
-      transform: translateX(-45%);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-}
-
-
-
-/* =========================================================
-   FINAL CAROUSEL + VARIANT FIX
-========================================================= */
-
-.variantPreview {
-  display: grid;
-  gap: 16px;
-  padding: 20px;
-  border-radius: 24px;
-  border: 1px solid rgba(255,106,0,.12);
-  background: linear-gradient(180deg,#fff7f1,#fff);
-}
-
-.variantGroup {
-  display: grid;
-  gap: 8px;
-}
-
-.variantGroup label {
-  font-size: .82rem;
-  font-weight: 900;
-  color: #111;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-}
-
-.variantGroup select {
-  width: 100%;
-  min-height: 50px;
-  border-radius: 14px;
-  border: 1px solid rgba(0,0,0,.08);
-  background: #fff;
-  padding: 0 14px;
-  font-size: .95rem;
-  font-weight: 700;
-}
-
-.carouselTrack {
-  display: flex !important;
-  gap: 20px !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  padding-bottom: 18px !important;
-  scroll-behavior: smooth;
-}
-
-.carouselProduct {
-  flex: 0 0 280px !important;
-  min-width: 280px !important;
-  max-width: 280px !important;
-  overflow: hidden;
-}
-
-.carouselProduct img {
-  width: 100% !important;
-  height: 220px !important;
-  object-fit: contain !important;
-  background: #fff;
-  padding: 10px;
-}
-
-.carouselTrack::-webkit-scrollbar {
-  height: 10px;
-}
-
-.carouselTrack::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg,#FF6A00,#FF8C3A);
-  border-radius: 999px;
-}
-
-@media (max-width: 768px) {
-  .carouselProduct {
-    flex: 0 0 78vw !important;
-    min-width: 78vw !important;
-    max-width: 78vw !important;
-  }
-
-  .carouselProduct img {
-    height: 200px !important;
-  }
-}
-
-
-
-/* =========================================================
-   SAFE CAROUSEL FIX
-   Corrige recorte sin alterar estética BENDO
-========================================================= */
-
-.carouselTrack{
-  align-items: stretch;
-}
-
-.carouselProduct{
-  overflow: hidden;
-}
-
-.carouselProduct img{
-  width: 100%;
-  max-width: 100%;
-  height: 200px;
-  object-fit: contain !important;
-  object-position: center;
-  display: block;
-}
-
 /* Productos verticales o grandes */
 .carouselProduct img[src*="aceite"],
 .carouselProduct img[src*="5l"],
@@ -2662,4 +2428,204 @@ body{
 .highlightSection,
 .weekSection{
   background:linear-gradient(180deg,#050505 0%,#0b0b0b 100%) !important;
+}
+
+
+
+
+
+/* =========================================================
+   BENDO V5 INFINITE AUTO CAROUSEL
+========================================================= */
+
+.relevanceCarousel{
+  position:relative;
+  overflow:hidden;
+  width:min(1200px,calc(100% - 32px)) !important;
+  margin:48px auto 82px !important;
+  padding:34px 28px !important;
+  border-radius:34px;
+  background:
+    radial-gradient(circle at top left, rgba(255,106,0,.18), transparent 24rem),
+    linear-gradient(145deg,#08080a 0%,#121218 100%);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:
+    0 35px 90px rgba(0,0,0,.34),
+    inset 0 0 0 1px rgba(255,255,255,.03);
+}
+
+.relevanceCarousel .sectionTitle{
+  margin-bottom:26px !important;
+}
+
+.relevanceCarousel .sectionTitle h2{
+  color:#fff !important;
+  font-size:clamp(2.5rem,5vw,4.8rem) !important;
+  line-height:.95;
+}
+
+.relevanceCarousel .sectionTitle span{
+  color:#ffb37a;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-weight:900;
+}
+
+.carouselViewport{
+  overflow:hidden;
+  width:100%;
+}
+
+.carouselRail{
+  display:flex;
+  align-items:stretch;
+  gap:18px;
+  width:max-content;
+  animation:bendoInfiniteV5 28s linear infinite;
+}
+
+.relevanceCarousel:hover .carouselRail{
+  animation-play-state:paused;
+}
+
+.carouselProduct{
+  position:relative;
+  flex:0 0 220px;
+  width:220px;
+  min-height:340px;
+  border-radius:26px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.carouselProduct:hover{
+  transform:translateY(-6px);
+  border-color:rgba(255,106,0,.45);
+  box-shadow:
+    0 25px 55px rgba(0,0,0,.28),
+    0 0 35px rgba(255,106,0,.12);
+}
+
+.carouselImageBox{
+  width:100%;
+  height:205px;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+
+.carouselImageBox img{
+  width:100%;
+  height:100%;
+  object-fit:contain !important;
+  object-position:center;
+  padding:12px;
+}
+
+.carouselInfo{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:16px 16px 18px;
+}
+
+.carouselInfo strong{
+  color:#fff;
+  font-size:1rem;
+  line-height:1.25;
+  font-weight:900;
+  min-height:44px;
+}
+
+.carouselInfo span{
+  color:#ff6a00;
+  font-size:1.5rem;
+  font-weight:1000;
+}
+
+.carouselMeta{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.carouselMeta em,
+.carouselMeta small{
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:.72rem;
+  font-style:normal;
+  font-weight:900;
+}
+
+.carouselMeta em{
+  background:#ff6a00;
+  color:#fff;
+}
+
+.carouselMeta small{
+  background:rgba(255,255,255,.08);
+  color:#ddd;
+}
+
+@keyframes bendoInfiniteV5{
+  from{
+    transform:translateX(0);
+  }
+  to{
+    transform:translateX(calc(-50% - 9px));
+  }
+}
+
+@media (max-width:900px){
+
+  .relevanceCarousel{
+    width:calc(100% - 18px) !important;
+    padding:24px 14px !important;
+    border-radius:28px;
+  }
+
+  .carouselViewport{
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    padding-bottom:10px;
+  }
+
+  .carouselRail{
+    animation:none;
+    gap:14px;
+  }
+
+  .carouselProduct{
+    flex:0 0 72vw;
+    width:72vw;
+    scroll-snap-align:start;
+  }
+
+  .carouselImageBox{
+    height:220px;
+  }
+}
+
+@media (max-width:480px){
+
+  .carouselProduct{
+    flex:0 0 78vw;
+    width:78vw;
+  }
+
+  .carouselInfo strong{
+    font-size:1rem;
+  }
+
+  .carouselInfo span{
+    font-size:1.35rem;
+  }
 }

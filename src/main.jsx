@@ -671,17 +671,36 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
             <span>Destacados • Ofertas • Virales</span>
           </div>
 
-          <div className="carouselTrack">
-            {carouselProducts.map((product) => (
-              <button className="carouselProduct" key={product.id} onClick={() => onProduct(product)}>
-                <img src={resolveProductImage(product.image)} alt={product.name} />
-                <div>
-                  <strong>{product.name}</strong>
-                  <span>{money(finalPrice(product))}</span>
-                  {getDiscountPercent(product) > 0 && <em>-{getDiscountPercent(product)}%</em>}
-                </div>
-              </button>
-            ))}
+          <div className="netflixCarousel">
+            <button className="carouselArrow left" aria-label="Productos anteriores">‹</button>
+
+            <div className="carouselViewport">
+              <div className="carouselRail">
+                {[...carouselProducts, ...carouselProducts].map((product, index) => (
+                  <button
+                    className="carouselProduct"
+                    key={`${product.id}-${index}`}
+                    onClick={() => onProduct(product)}
+                  >
+                    <div className="carouselImageBox">
+                      <img src={resolveProductImage(product.image)} alt={product.name} />
+                    </div>
+
+                    <div className="carouselInfo">
+                      <strong>{product.name}</strong>
+                      <span>{money(finalPrice(product))}</span>
+
+                      <div className="carouselMeta">
+                        {getDiscountPercent(product) > 0 && <em>-{getDiscountPercent(product)}%</em>}
+                        {Number(product.stock || 0) > 0 && <small>Stock {product.stock}</small>}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button className="carouselArrow right" aria-label="Productos siguientes">›</button>
           </div>
         </section>
       )}
