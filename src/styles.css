@@ -2602,3 +2602,64 @@ textarea {
     height: 205px;
   }
 }
+
+
+/* =========================================================
+   BENDO MOBILE PREMIUM IMPROVEMENTS
+========================================================= */
+
+html,
+body{
+  background:#050505 !important;
+}
+
+@media (max-width:768px){
+
+  .carouselTrack,
+  .productsCarousel,
+  .carouselProducts{
+    overflow-x:auto !important;
+    scroll-snap-type:x mandatory;
+    gap:14px !important;
+    padding-inline:12px !important;
+  }
+
+  .carouselProduct,
+  .productCard{
+    min-width:240px !important;
+    max-width:240px !important;
+    scroll-snap-align:start;
+  }
+
+  .carouselProduct img,
+  .productCard img{
+    width:100% !important;
+    height:190px !important;
+    object-fit:contain !important;
+    object-position:center !important;
+  }
+
+  .heroTitle{
+    font-size:3rem !important;
+    line-height:.95 !important;
+  }
+
+  .ctaSection,
+  .newsletterSection{
+    border-radius:28px !important;
+    overflow:hidden;
+  }
+}
+
+.trendGrid,
+.tendenciesGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:18px;
+}
+
+.featureSection,
+.highlightSection,
+.weekSection{
+  background:linear-gradient(180deg,#050505 0%,#0b0b0b 100%) !important;
+}

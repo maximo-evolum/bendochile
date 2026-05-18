@@ -689,7 +689,7 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
       <section id="experiencia" className="experience section trustSection">
         <div className="sectionTitle compact">
           <p className="eyebrow dark">Compra simple, atención real</p>
-          <h2>La tienda está optimizada para vender por WhatsApp.</h2>
+          <h2>Compra directo por WhatsApp y recibe atención real.</h2>
         </div>
 
         <div className="experienceGrid">
@@ -753,7 +753,7 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
         <div>
           <p className="eyebrow dark">Novedades y ofertas</p>
           <h2>Recibe productos virales antes que todos.</h2>
-          <p>Deja tu correo para enterarte de nuevos productos, descuentos y stock limitado.</p>
+          <p>Registra tu correo y recibe descuentos exclusivos en tus próximas compras.</p>
         </div>
 
         <form onSubmit={submitNewsletter}>
