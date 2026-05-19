@@ -739,7 +739,7 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
         <a href="#productos" className="cta">Ir al catálogo</a>
       </section>
 
-      <section id="productos" className="catalog section">
+      <section id="catalogo-bendo" className="catalog section">
         <div className="sectionTitle">
           <h2>Catálogo BENDO</h2>
           <span>{products.length} productos</span>
@@ -802,6 +802,12 @@ function Feature({ icon, title, text }) {
 
 
 function HighlightShelf({ title, subtitle, type = 'best', products, onProduct }) {
+  const handleViewAll = () => {
+    const catalog = document.getElementById('catalogo-bendo');
+    if (catalog) {
+      catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   const icons = {
     best: '🏆',
     offers: '🏷️',
@@ -824,7 +830,7 @@ function HighlightShelf({ title, subtitle, type = 'best', products, onProduct })
           <p>{subtitle}</p>
         </div>
 
-        <button className="weeklyViewAll" type="button">
+        <button className="weeklyViewAll" type="button" onClick={handleViewAll}>
           Ver todos <ChevronRight size={15} />
         </button>
       </div>
@@ -849,7 +855,7 @@ function HighlightShelf({ title, subtitle, type = 'best', products, onProduct })
         ))}
       </div>
 
-      <button className="weeklyBottomCta" type="button">
+      <button className="weeklyBottomCta" type="button" onClick={handleViewAll}>
         {ctas[type] || 'Ver todos'} <ChevronRight size={16} />
       </button>
     </article>
