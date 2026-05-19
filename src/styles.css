@@ -3426,3 +3426,89 @@ select{
     min-height:auto !important;
   }
 }
+
+
+
+/* =========================================
+   REAL FIX - CATALOGO BENDO
+========================================= */
+
+.card{
+  display:flex !important;
+  flex-direction:column !important;
+  height:100% !important;
+  min-height:640px !important;
+}
+
+.cardBody{
+  display:flex !important;
+  flex-direction:column !important;
+  flex:1 !important;
+}
+
+.card h3{
+  min-height:72px !important;
+}
+
+.card p{
+  min-height:88px !important;
+}
+
+.card small{
+  min-height:48px !important;
+  margin-bottom:14px !important;
+}
+
+.buyRow{
+  margin-top:auto !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+
+  gap:18px !important;
+  width:100% !important;
+}
+
+.priceBlock{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  gap:8px !important;
+}
+
+.discountInfo{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+}
+
+.buyRow button{
+  width:100% !important;
+  justify-content:center !important;
+  position:relative !important;
+  right:auto !important;
+  left:auto !important;
+  bottom:auto !important;
+  margin:0 !important;
+}
+
+.discountBadge{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-width:64px !important;
+}
+
+@media (max-width:768px){
+
+  .card{
+    min-height:auto !important;
+  }
+
+  .card h3,
+  .card p,
+  .card small{
+    min-height:auto !important;
+  }
+}
