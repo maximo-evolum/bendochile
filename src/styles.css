@@ -3148,3 +3148,117 @@ select{
     font-size:3rem !important;
   }
 }
+
+
+
+/* =====================================================
+   BENDO CATALOG CARD FIX
+===================================================== */
+
+/* cards catálogo */
+.product-card,
+.catalog-card,
+.shop-product-card{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    min-height:620px !important;
+    height:auto !important;
+    overflow:hidden !important;
+    border-radius:30px !important;
+}
+
+/* imagen */
+.product-card img,
+.catalog-card img,
+.shop-product-card img{
+    width:100% !important;
+    height:260px !important;
+    object-fit:contain !important;
+    object-position:center !important;
+    background:#f6f6f6 !important;
+    padding:12px !important;
+}
+
+/* contenido */
+.product-card-content,
+.catalog-content,
+.shop-card-content{
+    display:flex !important;
+    flex-direction:column !important;
+    flex:1 !important;
+    padding:22px !important;
+    gap:14px !important;
+}
+
+/* títulos */
+.product-card h3,
+.catalog-card h3,
+.shop-product-card h3{
+    line-height:1.05 !important;
+    font-size:2rem !important;
+    margin:0 !important;
+}
+
+/* descripción */
+.product-card p,
+.catalog-card p,
+.shop-product-card p{
+    line-height:1.6 !important;
+    color:#666 !important;
+}
+
+/* variantes compactas */
+.product-variants,
+.variant-list,
+.options-preview{
+    font-size:.92rem !important;
+    line-height:1.45 !important;
+    color:#ff6a00 !important;
+    display:-webkit-box !important;
+    -webkit-line-clamp:2 !important;
+    -webkit-box-orient:vertical !important;
+    overflow:hidden !important;
+    margin-top:6px !important;
+}
+
+/* botón abajo */
+.product-card .cta,
+.product-card button,
+.catalog-card button,
+.shop-product-card button{
+    margin-top:auto !important;
+    width:100% !important;
+    min-height:54px !important;
+    border-radius:999px !important;
+}
+
+/* precios */
+.product-price-row{
+    display:flex !important;
+    align-items:center !important;
+    gap:10px !important;
+    flex-wrap:wrap !important;
+}
+
+/* responsive */
+@media (max-width:768px){
+
+    .product-card,
+    .catalog-card,
+    .shop-product-card{
+        min-height:unset !important;
+    }
+
+    .product-card img,
+    .catalog-card img,
+    .shop-product-card img{
+        height:220px !important;
+    }
+
+    .product-card h3,
+    .catalog-card h3,
+    .shop-product-card h3{
+        font-size:1.7rem !important;
+    }
+}
