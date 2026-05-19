@@ -2905,3 +2905,80 @@ main{
   border:1px solid rgba(255,255,255,.08);
   border-radius:32px;
 }
+
+
+
+/* =========================================================
+   BENDO IMAGE SYSTEM REPAIR
+========================================================= */
+
+/* cards principales */
+.productCard,
+.carouselProduct{
+  overflow:hidden;
+}
+
+/* contenedor imagen */
+.productCard img,
+.carouselProduct img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-position:center;
+  transition:
+    transform .35s ease,
+    filter .35s ease;
+}
+
+/* catálogo principal */
+.productCard img{
+  object-fit:cover !important;
+}
+
+/* hover elegante */
+.productCard:hover img,
+.carouselProduct:hover img{
+  transform:scale(1.03);
+}
+
+/* productos altos o verticales */
+.productCard img[src*="aceite"],
+.productCard img[src*="5l"],
+.productCard img[src*="bidon"],
+.carouselProduct img[src*="aceite"],
+.carouselProduct img[src*="5l"],
+.carouselProduct img[src*="bidon"]{
+  object-fit:contain !important;
+  padding:10px;
+  background:#fff;
+}
+
+/* carrusel premium */
+.carouselImageBox{
+  overflow:hidden;
+  background:#fff;
+}
+
+.carouselImageBox img{
+  object-fit:contain !important;
+  padding:8px;
+}
+
+/* tendencias mosaico */
+.trendGrid .productCard img,
+.tendenciesGrid .productCard img{
+  aspect-ratio:1/1;
+  object-fit:cover !important;
+}
+
+/* responsive */
+@media (max-width:768px){
+
+  .productCard img{
+    min-height:220px;
+  }
+
+  .carouselImageBox img{
+    min-height:200px;
+  }
+}
