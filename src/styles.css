@@ -4246,3 +4246,66 @@ select{
   }
 }
 
+
+
+/* =========================================================
+   REAL FINAL WEEKLY FILTER + CLEAN HEADER
+========================================================= */
+
+.weeklyTopMiniLabel{
+  display:flex !important;
+  justify-content:center !important;
+  margin:0 0 30px !important;
+}
+
+.weeklyTopMiniLabel span{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-height:46px !important;
+  padding:0 24px !important;
+  border-radius:999px !important;
+  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03)) !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  color:#ffb37a !important;
+  font-size:.74rem !important;
+  font-weight:1000 !important;
+  letter-spacing:.18em !important;
+  text-transform:uppercase !important;
+}
+
+.weeklyProductText span{
+  font-size:1.08rem !important;
+  font-weight:1000 !important;
+  line-height:1.15 !important;
+  color:#fff !important;
+  letter-spacing:-.02em !important;
+}
+
+.weeklyProductPrice strong{
+  color:#ff8a3d !important;
+  font-size:1.22rem !important;
+  font-weight:1000 !important;
+}
+
+.weeklyProductPrice em{
+  min-height:28px !important;
+  padding:5px 12px !important;
+  color:#ff8a3d !important;
+  background:rgba(255,106,0,.13) !important;
+  border:1px solid rgba(255,106,0,.25) !important;
+  border-radius:999px !important;
+  font-size:.82rem !important;
+}
+
+.weeklyRank{
+  display:none !important;
+}
+
+.premiumWeeklyShelf.viral .weeklyProductItem{
+  grid-template-columns:78px minmax(0,1fr) auto !important;
+}
+
+.chips button.selected{
+  box-shadow:0 0 0 1px rgba(255,106,0,.32), 0 0 24px rgba(255,106,0,.12) !important;
+}

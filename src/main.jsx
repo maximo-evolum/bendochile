@@ -184,6 +184,7 @@ function App() {
   const view = route.startsWith('/admin') ? 'admin' : route.startsWith('/login') ? 'login' : 'store';
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('Todos');
+  const [catalogFilter, setCatalogFilter] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -228,13 +229,37 @@ function App() {
     };
   }, []);
 
+
+  useEffect(() => {
+    const handleCatalogFilter = (event) => {
+      const filter = event?.detail?.filter || 'all';
+
+      setCatalogFilter(filter);
+      setQuery('');
+      setCategory('Todos');
+    };
+
+    window.addEventListener('bendoFilterCatalog', handleCatalogFilter);
+
+    return () => {
+      window.removeEventListener('bendoFilterCatalog', handleCatalogFilter);
+    };
+  }, []);
+
   const filtered = useMemo(() => {
     return products.filter((product) => {
       const matchQuery = `${product.name} ${product.category} ${product.description}`.toLowerCase().includes(query.toLowerCase());
       const matchCategory = category === 'Todos' || product.category === category;
-      return matchQuery && matchCategory;
+
+      const matchCatalogFilter =
+        catalogFilter === 'all' ||
+        (catalogFilter === 'offers' && getDiscountPercent(product) > 0) ||
+        (catalogFilter === 'viral' && (product.featured || productInCarousel(product))) ||
+        (catalogFilter === 'best' && (product.featured || Number(product.stock || 0) <= 8));
+
+      return matchQuery && matchCategory && matchCatalogFilter;
     });
-  }, [products, query, category]);
+  }, [products, query, category, catalogFilter]);
 
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
@@ -725,9 +750,8 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
       </section>
 
       <section className="highlightSection section premiumHighlights">
-        <div className="sectionTitle">
-          <h2>🔥 Destacados de la semana</h2>
-          <span>Viral • Ofertas • Top ventas</span>
+        <div className="weeklyTopMiniLabel">
+          <span>VIRAL • OFERTAS • TOP VENTAS</span>
         </div>
 
         <div className="highlightGrid">
@@ -749,21 +773,35 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
       <section id="catalogo-bendo" className="catalog section">
         <div className="sectionTitle">
           <h2>Catálogo BENDO</h2>
-          <span>{products.length} productos</span>
+          <span>
+            {catalogFilter === 'offers'
+              ? 'Ofertas activas'
+              : catalogFilter === 'viral'
+                ? 'Productos virales'
+                : catalogFilter === 'best'
+                  ? 'Top ventas'
+                  : `${products.length} productos`}
+          </span>
         </div>
 
         <div className="toolbar">
           <div className="searchBox">
             <Search size={18} />
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar producto, descripción o categoría" />
+            <input value={query} onChange={(event) => { setQuery(event.target.value); setCatalogFilter('all'); }} placeholder="Buscar producto, descripción o categoría" />
           </div>
 
           <div className="chips">
             {categories.map((item) => (
-              <button key={item} onClick={() => setCategory(item)} className={category === item ? 'selected' : ''}>
+              <button key={item} onClick={() => { setCategory(item); setCatalogFilter('all'); }} className={category === item && catalogFilter === 'all' ? 'selected' : ''}>
                 {item}
               </button>
             ))}
+
+            {catalogFilter !== 'all' && (
+              <button className="selected" onClick={() => setCatalogFilter('all')}>
+                Limpiar filtro
+              </button>
+            )}
           </div>
         </div>
 
