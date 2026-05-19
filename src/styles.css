@@ -4825,3 +4825,41 @@ button.weeklyViewAll.finalPremiumButtonMini svg{
   stroke:#ff7a1a!important;
   -webkit-text-stroke:0!important;
 }
+
+
+
+/* =========================================================
+   OPTION 1 - PREMIUM CLEAN ORANGE TEXT
+========================================================= */
+
+.weeklyBottomCta.finalPremiumButton,
+.weeklyBottomCta.finalPremiumButton *,
+.weeklyViewAll.finalPremiumButtonMini,
+.weeklyViewAll.finalPremiumButtonMini *{
+
+  color:#ff7a1a !important;
+  -webkit-text-fill-color:#ff7a1a !important;
+
+  -webkit-text-stroke:1px #000 !important;
+  paint-order:stroke fill !important;
+
+  font-weight:1000 !important;
+  letter-spacing:.03em !important;
+
+  text-shadow:none !important;
+  filter:none !important;
+  opacity:1 !important;
+}
+
+.weeklyBottomCta.finalPremiumButton svg,
+.weeklyViewAll.finalPremiumButtonMini svg{
+  color:#ff7a1a !important;
+  stroke:#ff7a1a !important;
+  -webkit-text-stroke:0 !important;
+}
+
+.weeklyBottomCta.finalPremiumButton,
+.weeklyViewAll.finalPremiumButtonMini{
+  background:#ffffff !important;
+  border:2px solid #ff7a1a !important;
+}
