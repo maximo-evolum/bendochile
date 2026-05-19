@@ -4309,3 +4309,136 @@ select{
 .chips button.selected{
   box-shadow:0 0 0 1px rgba(255,106,0,.32), 0 0 24px rgba(255,106,0,.12) !important;
 }
+
+
+
+
+
+
+
+/* =========================================================
+   WEEKLY CARDS - FINAL PREMIUM FIX
+========================================================= */
+
+.weeklyProductItem{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  padding:14px 16px!important;
+  min-height:108px!important;
+  border-radius:24px!important;
+  background:#f7f7f7!important;
+  overflow:hidden!important;
+}
+
+.weeklyProductItem img{
+  width:72px!important;
+  height:72px!important;
+  object-fit:contain!important;
+  flex-shrink:0!important;
+  border-radius:16px!important;
+  background:#ffffff!important;
+  padding:4px!important;
+}
+
+.weeklyProductText{
+  flex:1!important;
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:8px!important;
+}
+
+.weeklyProductText span{
+  display:-webkit-box!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:normal!important;
+  font-size:1rem!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+  color:#111111!important;
+  margin:0!important;
+}
+
+.weeklyProductText small{
+  display:-webkit-box!important;
+  -webkit-line-clamp:1!important;
+  -webkit-box-orient:vertical!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:normal!important;
+  font-size:.82rem!important;
+  line-height:1.25!important;
+  color:#6d6d76!important;
+  margin:0!important;
+}
+
+.weeklyProductPrice{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  flex-wrap:wrap!important;
+  margin-top:2px!important;
+}
+
+.weeklyProductPrice strong{
+  font-size:1.08rem!important;
+  line-height:1!important;
+  font-weight:1000!important;
+  color:#ff7a1a!important;
+}
+
+.weeklyProductPrice em{
+  position:absolute!important;
+  top:12px!important;
+  right:12px!important;
+  margin:0!important;
+  padding:4px 10px!important;
+  border-radius:999px!important;
+  font-size:.70rem!important;
+  line-height:1!important;
+  font-weight:900!important;
+  background:rgba(255,122,26,.12)!important;
+  color:#ff7a1a!important;
+  border:1px solid rgba(255,122,26,.18)!important;
+}
+
+.weeklyProductPrice em:empty{
+  display:none!important;
+}
+
+@media(max-width:768px){
+
+  .weeklyProductItem{
+    min-height:96px!important;
+    padding:12px 14px!important;
+    gap:12px!important;
+  }
+
+  .weeklyProductItem img{
+    width:64px!important;
+    height:64px!important;
+  }
+
+  .weeklyProductText span{
+    font-size:.92rem!important;
+  }
+
+  .weeklyProductText small{
+    font-size:.76rem!important;
+  }
+
+  .weeklyProductPrice strong{
+    font-size:.96rem!important;
+  }
+
+  .weeklyProductPrice em{
+    font-size:.66rem!important;
+    padding:4px 8px!important;
+  }
+}
