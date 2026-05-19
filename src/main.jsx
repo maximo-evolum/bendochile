@@ -156,6 +156,13 @@ function finalPrice(product) {
   return Math.round(price - (price * percent / 100))
 }
 
+
+function applyBendoCatalogFilter(filter) {
+  window.dispatchEvent(new CustomEvent('setCatalogFilter', {
+    detail: { filter }
+  }));
+}
+
 function App() {
   const [route, setRoute] = useState(window.location.pathname);
   const [adminToken, setAdminToken] = useState(() => localStorage.getItem('admin_token') || '');
@@ -807,6 +814,12 @@ function HighlightShelf({ title, subtitle, type = 'best', products, onProduct })
     if (catalog) {
       catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    const event = new CustomEvent('bendoFilterCatalog', {
+      detail: { filter: type }
+    });
+
+    window.dispatchEvent(event);
   };
   const icons = {
     best: '🏆',

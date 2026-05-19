@@ -3975,3 +3975,110 @@ select{
     grid-template-columns:68px minmax(0,1fr)!important;
   }
 }
+
+
+
+/* =========================================================
+   BALANCED WEEKLY COLUMNS FIX
+========================================================= */
+
+.highlightGrid{
+  align-items:stretch!important;
+}
+
+.highlightShelf.premiumWeeklyShelf{
+  min-height:650px!important;
+  height:650px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+}
+
+.weeklyProductList{
+  flex:1!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  padding-right:4px!important;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,106,0,.45) transparent;
+}
+
+.weeklyProductList::-webkit-scrollbar{
+  width:6px;
+}
+
+.weeklyProductList::-webkit-scrollbar-thumb{
+  background:rgba(255,106,0,.4);
+  border-radius:999px;
+}
+
+.weeklyProductList::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.weeklyProductItem{
+  flex-shrink:0!important;
+  min-height:96px!important;
+  max-height:96px!important;
+}
+
+.weeklyProductItem img{
+  width:72px!important;
+  height:72px!important;
+}
+
+.weeklyProductText{
+  min-width:0!important;
+}
+
+.weeklyProductText span{
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+.weeklyBottomCta{
+  margin-top:auto!important;
+  flex-shrink:0!important;
+}
+
+.highlightShelf.premiumWeeklyShelf .weeklyProductList:has(.weeklyProductItem:only-child){
+  display:flex!important;
+  justify-content:center!important;
+}
+
+.highlightShelf.premiumWeeklyShelf .weeklyProductList:has(.weeklyProductItem:nth-child(2):last-child){
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:18px!important;
+}
+
+.highlightShelf.premiumWeeklyShelf .weeklyProductList:has(.weeklyProductItem:nth-child(3):last-child){
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:14px!important;
+}
+
+.weeklyProductItem{
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease!important;
+}
+
+.weeklyProductItem:hover{
+  transform:translateY(-3px) scale(1.01)!important;
+}
+
+@media(max-width:1050px){
+  .highlightShelf.premiumWeeklyShelf{
+    min-height:unset!important;
+    height:auto!important;
+  }
+
+  .weeklyProductList{
+    overflow:visible!important;
+  }
+}
+
