@@ -4863,3 +4863,25 @@ button.weeklyViewAll.finalPremiumButtonMini svg{
   background:#ffffff !important;
   border:2px solid #ff7a1a !important;
 }
+
+
+/* =========================================================
+   REAL PREMIUM OUTLINE TEXT
+========================================================= */
+
+.premiumOutlineText{
+  color:#ff7a1a !important;
+  -webkit-text-fill-color:#ff7a1a !important;
+  -webkit-text-stroke:1px #000 !important;
+  paint-order:stroke fill !important;
+
+  font-weight:1000 !important;
+  letter-spacing:.03em !important;
+  text-transform:uppercase !important;
+
+  text-shadow:none !important;
+  filter:none !important;
+  opacity:1 !important;
+
+  display:inline-block !important;
+}
