@@ -2822,3 +2822,86 @@ footer{background:#050506 !important;color:#fff !important}
   .experienceGrid .feature{padding:28px !important}
   .catalog.section{border-radius:28px 28px 0 0;padding-left:14px !important;padding-right:14px !important}
 }
+
+
+/* =========================================================
+   BENDO PREMIUM GRADIENT EXPERIENCE
+========================================================= */
+
+html,
+body{
+  background:
+    radial-gradient(circle at top left, rgba(255,106,0,.10), transparent 28rem),
+    radial-gradient(circle at 85% 18%, rgba(255,255,255,.05), transparent 26rem),
+    radial-gradient(circle at 50% 60%, rgba(255,255,255,.025), transparent 32rem),
+    linear-gradient(
+      180deg,
+      #050505 0%,
+      #0b0b0d 18%,
+      #111114 38%,
+      #0d0d10 56%,
+      #151518 74%,
+      #090909 100%
+    ) !important;
+
+  background-attachment: fixed;
+  color:#fff;
+}
+
+section,
+main{
+  background:transparent !important;
+}
+
+.urgencySection,
+.visualUrgency,
+[data-section="urgency"]{
+  display:none !important;
+}
+
+.weekSection,
+.featuredWeek,
+.highlightSection{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)) !important;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:32px;
+  backdrop-filter:blur(14px);
+}
+
+.catalogSection,
+.catalogWrapper,
+.productsSection{
+  background:
+    radial-gradient(circle at top, rgba(255,106,0,.06), transparent 20rem),
+    rgba(10,10,12,.45) !important;
+  border-radius:32px;
+}
+
+.productCard,
+.carouselProduct{
+  border:1px solid rgba(255,255,255,.08) !important;
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,.06),
+      rgba(255,255,255,.025)
+    ) !important;
+}
+
+.productCard:hover,
+.carouselProduct:hover{
+  transform:translateY(-4px);
+  border-color:rgba(255,106,0,.35) !important;
+}
+
+.newsletterSection,
+.subscriptionSection{
+  background:
+    linear-gradient(135deg,
+      rgba(255,255,255,.05),
+      rgba(255,255,255,.02)
+    ) !important;
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:32px;
+}
