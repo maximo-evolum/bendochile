@@ -2982,3 +2982,169 @@ main{
     min-height:200px;
   }
 }
+
+
+
+/* =========================================================
+   BENDO PRODUCT MODAL PREMIUM FIX
+========================================================= */
+
+.productModal,
+.product-modal,
+.modalContent,
+.productViewModal{
+  backdrop-filter: blur(10px) !important;
+}
+
+/* panel derecho */
+.productInfo,
+.productDetails,
+.modalRight{
+  display:flex;
+  flex-direction:column;
+  gap:18px !important;
+  padding:22px 28px !important;
+}
+
+/* títulos */
+.productInfo h1,
+.productDetails h1,
+.modalRight h1{
+  color:#ffffff !important;
+  font-weight:1000 !important;
+  letter-spacing:-0.04em;
+  line-height:.92 !important;
+}
+
+/* descripción */
+.productInfo p,
+.productDescription,
+.modalRight p{
+  color:#c8c8d0 !important;
+  line-height:1.65 !important;
+  font-size:1rem !important;
+}
+
+/* dropdown premium */
+select{
+  width:100%;
+  min-height:50px;
+  border-radius:16px !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:rgba(18,18,22,.92) !important;
+  color:#fff !important;
+  padding:0 16px !important;
+  margin-top:8px !important;
+  margin-bottom:12px !important;
+  font-size:.96rem;
+  outline:none;
+  box-shadow:none !important;
+}
+
+/* bloque especificaciones */
+.specifications,
+.specificationsBox,
+.productSpecs{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.05),
+      rgba(255,255,255,.025)
+    ) !important;
+
+  border:1px solid rgba(255,255,255,.08) !important;
+  border-radius:22px !important;
+  padding:22px !important;
+  margin-top:4px !important;
+}
+
+.specifications h3,
+.productSpecs h3{
+  color:#fff !important;
+  margin-bottom:12px !important;
+}
+
+.specifications p,
+.productSpecs p{
+  color:#cfcfd6 !important;
+}
+
+/* precio */
+.productPrice,
+.priceBlock{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.productPrice strong,
+.priceBlock strong{
+  color:#fff !important;
+  font-size:3rem !important;
+  font-weight:1000 !important;
+}
+
+/* botón */
+.addToCartButton,
+.buyButton,
+.productCTA{
+  min-height:58px;
+  border-radius:999px !important;
+  background:linear-gradient(135deg,#ff6a00,#ff934d) !important;
+  color:#fff !important;
+  font-weight:900 !important;
+  letter-spacing:.08em;
+  box-shadow:
+    0 14px 38px rgba(255,106,0,.22);
+}
+
+/* imagen principal */
+.productGallery,
+.galleryMain{
+  padding:14px !important;
+}
+
+.productGallery img,
+.galleryMain img{
+  object-fit:contain !important;
+  object-position:center;
+  border-radius:22px !important;
+}
+
+/* thumbnails */
+.thumbnail,
+.galleryThumb{
+  border-radius:18px !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  overflow:hidden;
+  background:rgba(255,255,255,.03);
+}
+
+.thumbnail.active,
+.galleryThumb.active{
+  border-color:rgba(255,106,0,.45) !important;
+  box-shadow:
+    0 0 24px rgba(255,106,0,.18);
+}
+
+/* mobile */
+@media (max-width:768px){
+
+  .productInfo,
+  .productDetails,
+  .modalRight{
+    padding:18px !important;
+    gap:14px !important;
+  }
+
+  .productPrice strong,
+  .priceBlock strong{
+    font-size:2.3rem !important;
+  }
+
+  .productInfo h1,
+  .productDetails h1{
+    font-size:3rem !important;
+  }
+}
