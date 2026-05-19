@@ -157,12 +157,6 @@ function finalPrice(product) {
 }
 
 
-function applyBendoCatalogFilter(filter) {
-  window.dispatchEvent(new CustomEvent('setCatalogFilter', {
-    detail: { filter }
-  }));
-}
-
 function App() {
   const [route, setRoute] = useState(window.location.pathname);
   const [adminToken, setAdminToken] = useState(() => localStorage.getItem('admin_token') || '');
@@ -419,6 +413,8 @@ function App() {
           setQuery={setQuery}
           category={category}
           setCategory={setCategory}
+          catalogFilter={catalogFilter}
+          setCatalogFilter={setCatalogFilter}
           onProduct={setSelectedProduct}
           addToCart={addToCart}
         />
@@ -446,7 +442,7 @@ function Header({ view, navigate, cartCount, setCartOpen, mobileMenu, setMobileM
         {view === 'store' ? (
           <>
             <button onClick={() => go('store')} className="active">Tienda</button>
-            <a href="#productos" onClick={() => { navigate('/shop'); setMobileMenu(false); }}>Catálogo</a>
+            <a href="#catalogo-bendo" onClick={() => { navigate('/shop'); setMobileMenu(false); }}>Catálogo</a>
           </>
         ) : view === 'admin' ? (
           <>
@@ -592,7 +588,7 @@ function pickProducts(products, predicate, limit = 4) {
   return (selected.length > 0 ? selected : list).slice(0, limit)
 }
 
-function Store({ products, allProducts, query, setQuery, category, setCategory, onProduct, addToCart }) {
+function Store({ products, allProducts, query, setQuery, category, setCategory, catalogFilter, setCatalogFilter, onProduct, addToCart }) {
   const [email, setEmail] = useState('')
   const [newsletterStatus, setNewsletterStatus] = useState('')
   const featured = pickProducts(allProducts, (product) => product.featured || getDiscountPercent(product) > 0, 3)
@@ -767,7 +763,7 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
           <h2>Ofertas y stock limitado</h2>
           <p>Revisa los productos con descuento, últimas unidades y artículos destacados antes de que se agoten.</p>
         </div>
-        <a href="#productos" className="cta">Ir al catálogo</a>
+        <a href="#catalogo-bendo" className="cta">Ir al catálogo</a>
       </section>
 
       <section id="catalogo-bendo" className="catalog section">
@@ -853,11 +849,9 @@ function HighlightShelf({ title, subtitle, type = 'best', products, onProduct })
       catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    const event = new CustomEvent('bendoFilterCatalog', {
+    window.dispatchEvent(new CustomEvent('bendoFilterCatalog', {
       detail: { filter: type }
-    });
-
-    window.dispatchEvent(event);
+    }));
   };
   const icons = {
     best: '🏆',
