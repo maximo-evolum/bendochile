@@ -2662,9 +2662,7 @@ body{
   border-bottom:1px solid rgba(255,255,255,.08) !important;
   box-shadow:0 20px 50px rgba(0,0,0,.22) !important;
 }
-.bendoTextLogo{color:#fff !important;text-shadow:0 10px 30px rgba(0,0,0,.22)}
-.header nav button,.header nav a{color:rgba(255,255,255,.72) !important}
-.header nav .active,.header nav button:hover,.header nav a:hover{color:#fff !important;background:rgba(255,106,0,.13) !important}
+.bendoTextLogo{color:#fff !important;background:rgba(255,106,0,.13) !important}
 .cartButton,.menuButton,.logoutButton{background:#fff !important;color:#09090b !important}
 
 .topPromo{
@@ -3910,7 +3908,7 @@ select{
   background: linear-gradient(180deg,#ffffff 0%,#f2f2f2 100%);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  text-shadow:none!important;
+  
 }
 
 .highlightShelf.premiumWeeklyShelf{
@@ -4715,4 +4713,115 @@ select{
   border-color:#ff8a3d!important;
   box-shadow:
     0 10px 24px rgba(255,138,61,.16)!important;
+}
+
+
+
+/* =========================================================
+   FINAL READABLE WEEKLY CTA BUTTONS
+========================================================= */
+
+.weeklyBottomCta.finalPremiumButton,
+button.weeklyBottomCta.finalPremiumButton{
+  background:#ffffff!important;
+  border:2px solid #ff7a1a!important;
+  color:#111111!important;
+  
+}
+
+.weeklyBottomCta.finalPremiumButton,
+.weeklyBottomCta.finalPremiumButton *,
+button.weeklyBottomCta.finalPremiumButton,
+button.weeklyBottomCta.finalPremiumButton *{
+  color:#111111!important;
+  -webkit-text-fill-color:#111111!important;
+  opacity:1!important;
+  
+  filter:none!important;
+}
+
+.weeklyBottomCta.finalPremiumButton svg,
+button.weeklyBottomCta.finalPremiumButton svg{
+  color:#ff7a1a!important;
+  stroke:#ff7a1a!important;
+  -webkit-text-fill-color:#ff7a1a!important;
+}
+
+.weeklyBottomCta.finalPremiumButton:hover,
+button.weeklyBottomCta.finalPremiumButton:hover{
+  background:#fff8f2!important;
+  border-color:#ff6a00!important;
+  box-shadow:
+    0 12px 28px rgba(255,106,0,.18),
+    0 0 18px rgba(255,106,0,.10)!important;
+}
+
+.weeklyViewAll.finalPremiumButtonMini,
+button.weeklyViewAll.finalPremiumButtonMini{
+  background:#ffffff!important;
+  border:1.5px solid #ff7a1a!important;
+  color:#111111!important;
+}
+
+.weeklyViewAll.finalPremiumButtonMini,
+.weeklyViewAll.finalPremiumButtonMini *,
+button.weeklyViewAll.finalPremiumButtonMini,
+button.weeklyViewAll.finalPremiumButtonMini *{
+  color:#111111!important;
+  -webkit-text-fill-color:#111111!important;
+  opacity:1!important;
+  
+}
+
+.weeklyViewAll.finalPremiumButtonMini svg,
+button.weeklyViewAll.finalPremiumButtonMini svg{
+  color:#ff7a1a!important;
+  stroke:#ff7a1a!important;
+  -webkit-text-fill-color:#ff7a1a!important;
+}
+
+
+
+/* =========================================================
+   CLEAN PREMIUM ORANGE OUTLINE TEXT
+========================================================= */
+
+.weeklyBottomCta.finalPremiumButton,
+.weeklyBottomCta.finalPremiumButton *,
+.weeklyViewAll.finalPremiumButtonMini,
+.weeklyViewAll.finalPremiumButtonMini *{
+
+  color:#ff7a1a!important;
+  -webkit-text-fill-color:#ff7a1a!important;
+
+  -webkit-text-stroke:1.15px #000!important;
+  paint-order:stroke fill!important;
+
+  font-weight:1000!important;
+  letter-spacing:.05em!important;
+
+  text-shadow:none!important;
+  filter:none!important;
+  opacity:1!important;
+}
+
+.weeklyBottomCta.finalPremiumButton,
+.weeklyViewAll.finalPremiumButtonMini{
+  background:#ffffff!important;
+  border:2px solid #ff7a1a!important;
+  box-shadow:none!important;
+}
+
+.weeklyBottomCta.finalPremiumButton:hover,
+.weeklyViewAll.finalPremiumButtonMini:hover{
+  background:#fff8f3!important;
+  border-color:#ff7a1a!important;
+  box-shadow:none!important;
+}
+
+.weeklyBottomCta.finalPremiumButton svg,
+.weeklyViewAll.finalPremiumButtonMini svg{
+  color:#ff7a1a!important;
+  stroke:#ff7a1a!important;
+  -webkit-text-stroke:0!important;
 }
