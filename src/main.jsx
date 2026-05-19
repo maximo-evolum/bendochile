@@ -875,7 +875,7 @@ function HighlightShelf({ title, subtitle, type = 'best', products, onProduct })
           <p>{subtitle}</p>
         </div>
 
-        <button className="weeklyViewAll" type="button" onClick={handleViewAll}>
+        <button className="weeklyViewAll finalPremiumButtonMini" type="button" onClick={handleViewAll}>
           Ver todos <ChevronRight size={15} />
         </button>
       </div>
@@ -900,7 +900,7 @@ function HighlightShelf({ title, subtitle, type = 'best', products, onProduct })
         ))}
       </div>
 
-      <button className="weeklyBottomCta" type="button" onClick={handleViewAll}>
+      <button className="weeklyBottomCta finalPremiumButton" type="button" onClick={handleViewAll}>
         {ctas[type] || 'Ver todos'} <ChevronRight size={16} />
       </button>
     </article>

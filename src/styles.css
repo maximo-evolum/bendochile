@@ -4564,3 +4564,126 @@ select{
     font-size:.78rem!important;
   }
 }
+
+
+
+/* =========================================================
+   FINAL REAL PREMIUM BUTTONS
+========================================================= */
+
+.finalPremiumButton{
+  width:100%!important;
+  min-height:60px!important;
+
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+
+  border:none!important;
+  border-radius:18px!important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #151518 0%,
+      #1e1e24 55%,
+      #2a1b12 100%
+    )!important;
+
+  color:#f5f5f7!important;
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.35),
+    0 0 20px rgba(255,120,40,.10),
+    inset 0 1px 0 rgba(255,255,255,.04)!important;
+
+  border:1px solid rgba(255,130,50,.22)!important;
+
+  font-size:.84rem!important;
+  font-weight:1000!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    border-color .22s ease!important;
+
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+.finalPremiumButton::before{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,140,60,.08),
+      transparent
+    );
+
+  opacity:0;
+  transition:opacity .25s ease;
+}
+
+.finalPremiumButton:hover{
+  transform:translateY(-2px)!important;
+
+  border-color:rgba(255,140,60,.45)!important;
+
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.42),
+    0 0 30px rgba(255,120,40,.18)!important;
+}
+
+.finalPremiumButton:hover::before{
+  opacity:1;
+}
+
+.finalPremiumButton svg{
+  width:18px!important;
+  height:18px!important;
+  color:#ff8a3d!important;
+}
+
+.finalPremiumButtonMini{
+  background:transparent!important;
+  border:none!important;
+  color:#ff9a52!important;
+
+  font-size:.76rem!important;
+  font-weight:1000!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+
+  display:flex!important;
+  align-items:center!important;
+  gap:4px!important;
+
+  padding:10px 14px!important;
+  border-radius:999px!important;
+
+  transition:
+    background .22s ease,
+    color .22s ease!important;
+}
+
+.finalPremiumButtonMini:hover{
+  background:rgba(255,130,50,.08)!important;
+  color:#ffb072!important;
+}
+
+@media(max-width:768px){
+
+  .finalPremiumButton{
+    min-height:54px!important;
+    font-size:.76rem!important;
+    letter-spacing:.08em!important;
+    border-radius:16px!important;
+  }
+}
