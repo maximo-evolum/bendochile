@@ -724,9 +724,9 @@ function Store({ products, allProducts, query, setQuery, category, setCategory, 
         </div>
 
         <div className="highlightGrid">
-          <HighlightShelf title="Más vendidos esta semana" products={bestSellers} onProduct={onProduct} />
-          <HighlightShelf title="Ofertas" products={offers} onProduct={onProduct} />
-          <HighlightShelf title="Viral" products={viral} onProduct={onProduct} />
+          <HighlightShelf title="Más vendidos" subtitle="esta semana" type="best" products={bestSellers} onProduct={onProduct} />
+          <HighlightShelf title="Ofertas" subtitle="imperdibles" type="offers" products={offers} onProduct={onProduct} />
+          <HighlightShelf title="Viral" subtitle="del momento" type="viral" products={viral} onProduct={onProduct} />
         </div>
       </section>
 
@@ -801,21 +801,57 @@ function Feature({ icon, title, text }) {
 }
 
 
-function HighlightShelf({ title, products, onProduct }) {
-  return (
-    <article className="highlightShelf">
-      <h3>{title}</h3>
+function HighlightShelf({ title, subtitle, type = 'best', products, onProduct }) {
+  const icons = {
+    best: '🏆',
+    offers: '🏷️',
+    viral: '🔥'
+  };
 
-      <div>
-        {products.map((product) => (
-          <button key={product.id} onClick={() => onProduct(product)}>
+  const ctas = {
+    best: 'Ver todos los más vendidos',
+    offers: 'Ver todas las ofertas',
+    viral: 'Ver todos los virales'
+  };
+
+  return (
+    <article className={`highlightShelf premiumWeeklyShelf ${type}`}>
+      <div className="weeklyShelfHead">
+        <div className="weeklyIcon">{icons[type] || '🔥'}</div>
+
+        <div>
+          <h3>{title}</h3>
+          <p>{subtitle}</p>
+        </div>
+
+        <button className="weeklyViewAll" type="button">
+          Ver todos <ChevronRight size={15} />
+        </button>
+      </div>
+
+      <div className="weeklyProductList">
+        {products.map((product, index) => (
+          <button className="weeklyProductItem" key={product.id} onClick={() => onProduct(product)}>
+            {type === 'viral' && <span className="weeklyRank">{index + 1}</span>}
+
             <img src={resolveProductImage(product.image)} alt={product.name} />
-            <span>{product.name}</span>
-            <strong>{money(finalPrice(product))}</strong>
-            {getDiscountPercent(product) > 0 && <em>-{getDiscountPercent(product)}%</em>}
+
+            <div className="weeklyProductText">
+              <span>{product.name}</span>
+              <small>{product.shortDescription || product.description || 'Selección BENDO'}</small>
+            </div>
+
+            <div className="weeklyProductPrice">
+              <strong>{money(finalPrice(product))}</strong>
+              {getDiscountPercent(product) > 0 && <em>-{getDiscountPercent(product)}%</em>}
+            </div>
           </button>
         ))}
       </div>
+
+      <button className="weeklyBottomCta" type="button">
+        {ctas[type] || 'Ver todos'} <ChevronRight size={16} />
+      </button>
     </article>
   );
 }
