@@ -851,7 +851,7 @@ function HighlightShelf({ title, subtitle, type = 'best', products, onProduct })
       <div className="weeklyProductList">
         {products.map((product, index) => (
           <button className="weeklyProductItem" key={product.id} onClick={() => onProduct(product)}>
-            {type === 'viral' && <span className="weeklyRank">{index + 1}</span>}
+
 
             <img src={resolveProductImage(product.image)} alt={product.name} />
 
